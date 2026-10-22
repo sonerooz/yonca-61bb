@@ -513,6 +513,8 @@
     },
   };
 
+  // Gemini ile üretilen görseller (sanat/<tema>/): semboller, logo, arka plan
+  for (const [id, tm] of Object.entries(TEMALAR)) { tm.id = id; tm.resimli = true; }
   dis.TEMALAR = TEMALAR;
   dis.TEMA_DEGRADE = DEGRADELER;
   dis.TEMA_ETIKET = ETIKET;

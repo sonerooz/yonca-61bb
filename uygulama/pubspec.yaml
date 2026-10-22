@@ -56,6 +56,13 @@ flutter:
   assets:
     - assets/web/
     - assets/web/muzik/
+    - assets/web/sanat/yonca/
+    - assets/web/sanat/seker/
+    - assets/web/sanat/buyucu/
+    - assets/web/sanat/ates/
+    - assets/web/sanat/korsan/
+    - assets/web/sanat/kuzu/
+    - assets/web/sanat/maya/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
