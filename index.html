@@ -240,14 +240,15 @@ body.coskulu .ampul.b { animation-delay: .12s; } body.coskulu .ampul.c { animati
 /* karakter sahnesi */
 #sahne { position: relative; height: 92px; margin-top: auto; z-index: 1; pointer-events: none; }
 #sahne + .cerceve { margin-top: 0; z-index: 2; }
-#karakter { position: absolute; right: -4px; bottom: -40px; height: 142px; transform-origin: 50% 100%; animation: nefes 3.2s ease-in-out infinite; }
+.bakiye-kutu { position: relative; z-index: 3; }
+#karakter { position: absolute; right: -4px; bottom: -34px; height: 124px; transform-origin: 50% 100%; animation: nefes 3.2s ease-in-out infinite; }
 #karakter img { height: 100%; display: block; filter: drop-shadow(0 6px 10px #000a); }
 #karakter.aksiyon { animation: aksiyonA .5s ease-out; }
 #karakter.sevinc { animation: sevincA .45s ease-in-out 4 alternate; }
 @keyframes nefes { 50% { transform: scale(1.025, .985) translateY(1px); } }
 @keyframes aksiyonA { 0% { transform: scale(.95) rotate(-3deg); } 40% { transform: scale(1.08) rotate(2deg); } 100% { transform: none; } }
 @keyframes sevincA { to { transform: translateY(-12px) rotate(-2deg) scale(1.04); } }
-#balon { position: absolute; right: 150px; bottom: 34px; max-width: 58%; padding: 8px 12px; border-radius: 16px 16px 4px 16px; background: #fffef5; color: #231600;
+#balon { position: absolute; right: 128px; bottom: 34px; max-width: 58%; padding: 8px 12px; border-radius: 16px 16px 4px 16px; background: #fffef5; color: #231600;
   font-weight: 900; font-size: 14px; line-height: 1.25; box-shadow: 0 6px 16px #0008; opacity: 0; transform: scale(.6); transform-origin: 100% 100%; transition: opacity .2s, transform .25s cubic-bezier(.3,1.6,.5,1); }
 #balon.acik { opacity: 1; transform: none; }
 .mermi { position: fixed; left: 0; top: 0; z-index: 33; pointer-events: none; font-size: 30px; line-height: 1; will-change: transform; filter: drop-shadow(0 0 8px #fff8); }
