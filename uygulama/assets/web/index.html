@@ -1662,7 +1662,12 @@ ikramiyeGoster();
 addEventListener('load', lobiAc);
 akisYaz(`🎰 Şans Sarayı'na hoş geldin! Bugün <b>${(40 + Math.floor(Math.random() * 30))}</b> kişi büyük kazandı`);
 setTimeout(sahteKazanan, 2500);
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  // yeni sürüm (yeni sw) devreye girince sayfayı bir kez tazele → güncelleme hemen görünsün
+  const vardi = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (vardi && !donuyor && !bedavaKalan) location.reload(); });
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
+}
 </script>
 <script src="yaris.js"></script>
 <script src="rulet.js"></script>
