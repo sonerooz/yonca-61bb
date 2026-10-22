@@ -2,29 +2,29 @@
 (function (dis) {
   // W: dört yapraklı yonca (joker), S: altın kazanı (dağınık, bedava dönüş)
   const SEMBOLLER = {
-    W: { ad: 'Dört Yapraklı Yonca', ode: [0, 0, 0, 25, 120, 600] },
+    W: { ad: 'Dört Yapraklı Yonca', ode: [0, 0, 0, 15, 60, 250] },
     S: { ad: 'Altın Kazanı', ode: [0, 0, 0, 2, 10, 50] }, // toplam bahis çarpanı
-    N: { ad: 'Uğurlu Nal', ode: [0, 0, 0, 15, 60, 250] },
-    A: { ad: 'Altın Sikke', ode: [0, 0, 0, 10, 40, 150] },
-    U: { ad: 'Uğur Böceği', ode: [0, 0, 0, 8, 25, 100] },
-    P: { ad: 'Yeşil Şapka', ode: [0, 0, 0, 6, 18, 75] },
-    C: { ad: 'Altın Çan', ode: [0, 0, 0, 5, 12, 50] },
-    Y: { ad: 'Üç Yapraklı Yonca', ode: [0, 0, 0, 4, 10, 40] },
+    N: { ad: 'Uğurlu Nal', ode: [0, 0, 0, 10, 35, 120] },
+    A: { ad: 'Altın Sikke', ode: [0, 0, 0, 10, 30, 100] },
+    U: { ad: 'Uğur Böceği', ode: [0, 0, 0, 6, 18, 60] },
+    P: { ad: 'Yeşil Şapka', ode: [0, 0, 0, 5, 12, 40] },
+    C: { ad: 'Altın Çan', ode: [0, 0, 0, 4, 10, 30] },
+    Y: { ad: 'Üç Yapraklı Yonca', ode: [0, 0, 0, 3, 8, 25] },
   };
   // her makarada sembol adetleri (şerit uzunluğu = toplam)
   const AGIRLIK = [
-    { W: 2, S: 2, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9 },
-    { W: 2, S: 2, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9 },
-    { W: 2, S: 2, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9 },
-    { W: 2, S: 2, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9 },
-    { W: 2, S: 2, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9 },
+    { W: 2, S: 2, N: 3, A: 4, U: 5, P: 7, C: 9, Y: 11 },
+    { W: 2, S: 2, N: 3, A: 4, U: 5, P: 7, C: 9, Y: 11 },
+    { W: 2, S: 2, N: 3, A: 4, U: 5, P: 7, C: 9, Y: 11 },
+    { W: 2, S: 2, N: 3, A: 4, U: 5, P: 7, C: 9, Y: 11 },
+    { W: 2, S: 2, N: 3, A: 4, U: 5, P: 7, C: 9, Y: 11 },
   ];
   // 10 ödeme çizgisi: her makarada satır (0 üst, 1 orta, 2 alt)
   const CIZGILER = [
     [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [2, 2, 2, 2, 2], [0, 1, 2, 1, 0], [2, 1, 0, 1, 2],
     [0, 0, 1, 2, 2], [2, 2, 1, 0, 0], [1, 0, 0, 0, 1], [1, 2, 2, 2, 1], [1, 0, 1, 2, 1],
   ];
-  const BEDAVA_ADET = 10, BEDAVA_CARPAN = 2;
+  const BEDAVA_ADET = 7, BEDAVA_CARPAN = 2;
 
   // sabit tohumla karıştırılmış şeritler (joker/kazan birbirine 2'den yakın düşmesin)
   function seritKur(ag, tohum) {
@@ -91,6 +91,39 @@
     return sonuc;
   }
 
-  const api = { SEMBOLLER, AGIRLIK, CIZGILER, SERITLER, BEDAVA_ADET, BEDAVA_CARPAN, cevir, hesapla };
+  // ---------- sürpriz özellikler ----------
+  const YAGMUR_OLASILIK = 0.05;   // kazançsız dönüşte "Yonca Yağmuru": birkaç kare jokere döner
+  const CARPAN_OLASILIK = 0.06;   // kazançlı dönüşte "Şans Çarpanı"
+  const CARPANLAR = [2, 2, 2, 3, 3, 5];
+  const KUMBARA_HEDEF = 50;       // bu kadar dönüşte kumbara dolar (bedava dönüşler saymaz)
+  const KUMBARA_ODUL = [2, 3, 4, 5, 6, 8, 10]; // toplam bahis katı
+
+  // tek dönüş: { izgara, sonuc, yagmur:[[m,r]..], carpan }
+  function oyna(bahis, bedavada = false, rnd = Math.random) {
+    let { izgara } = cevir(rnd);
+    const ilk = izgara;
+    let sonuc = hesapla(izgara, bahis, bedavada), yagmur = [], carpan = 1;
+    if (sonuc.kazanc === 0 && sonuc.dagink < 3 && rnd() < YAGMUR_OLASILIK) {
+      // rastgele bir çizginin ilk iki karesi + 0-1 rastgele kare jokere döner
+      const c = CIZGILER[Math.floor(rnd() * CIZGILER.length)];
+      const hedef = [[0, c[0]], [1, c[1]]];
+      const ek = Math.floor(rnd() * 2);
+      for (let i = 0; i < 20 && hedef.length < 2 + ek; i++) {
+        const m = Math.floor(rnd() * 5), r = Math.floor(rnd() * 3);
+        if (!hedef.some(([a, b]) => a === m && b === r)) hedef.push([m, r]);
+      }
+      izgara = izgara.map(k => k.slice());
+      for (const [m, r] of hedef) if (izgara[m][r] !== 'S') { izgara[m][r] = 'W'; yagmur.push([m, r]); }
+      sonuc = hesapla(izgara, bahis, bedavada);
+    }
+    if (sonuc.kazanc > 0 && rnd() < CARPAN_OLASILIK) {
+      carpan = CARPANLAR[Math.floor(rnd() * CARPANLAR.length)];
+      sonuc.kazanc *= carpan;
+    }
+    return { ilk, izgara, sonuc, yagmur, carpan };
+  }
+  const kumbaraOdul = (rnd = Math.random) => KUMBARA_ODUL[Math.floor(rnd() * KUMBARA_ODUL.length)];
+
+  const api = { SEMBOLLER, AGIRLIK, CIZGILER, SERITLER, BEDAVA_ADET, BEDAVA_CARPAN, KUMBARA_HEDEF, KUMBARA_ODUL, cevir, hesapla, oyna, kumbaraOdul };
   if (typeof module !== 'undefined') module.exports = api; else dis.Motor = api;
 })(this);

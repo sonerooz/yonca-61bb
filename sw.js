@@ -1,5 +1,5 @@
 // çevrimdışı çalışma: önce önbellek, arkada güncelle
-const SURUM = 'yonca-v1';
+const SURUM = 'yonca-v2';
 const DOSYALAR = ['./', 'index.html', 'motor.js', 'manifest.json', 'ikon-180.png', 'ikon-192.png', 'ikon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(SURUM).then(c => c.addAll(DOSYALAR))); self.skipWaiting(); });
 self.addEventListener('activate', e => {
