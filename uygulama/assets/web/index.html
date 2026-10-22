@@ -90,9 +90,9 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 @keyframes ampul { 0%, 60%, 100% { opacity: .25; box-shadow: none; } 15%, 45% { opacity: 1; box-shadow: 0 0 8px 3px #ffd34d; } }
 body.coskulu .ampul { animation-duration: .36s; }
 body.coskulu .ampul.b { animation-delay: .12s; } body.coskulu .ampul.c { animation-delay: .24s; }
-.makaralar { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; border-radius: 14px;
+.makaralar { position: relative; display: grid; grid-template-columns: repeat(var(--sutun, 5), 1fr); gap: 4px; padding: 4px; border-radius: 14px;
   background: linear-gradient(180deg, #000, #222 50%, #000); overflow: hidden; }
-.makara { position: relative; overflow: hidden; height: calc(var(--h) * 3); border-radius: 8px; background: var(--makara);
+.makara { position: relative; overflow: hidden; height: calc(var(--h) * var(--satir, 3)); border-radius: 8px; background: var(--makara);
   box-shadow: inset 0 8px 10px -6px #0007, inset 0 -8px 10px -6px #0007; transition: box-shadow .2s; }
 .makara.bekleyis { box-shadow: inset 0 0 0 3px #ffd34d, inset 0 0 26px #ffb300; animation: bekle .25s infinite alternate; }
 @keyframes bekle { to { filter: brightness(1.25); } }
@@ -101,6 +101,7 @@ body.coskulu .ampul.b { animation-delay: .12s; } body.coskulu .ampul.c { animati
 .hucre svg { width: 86%; height: 86%; transition: opacity .2s, filter .2s; }
 .donuyor .hucre svg { filter: blur(.6px); }
 .soluk .hucre:not(.kazanan) svg { opacity: .28; filter: grayscale(.6); }
+.makaralar.kume .hucre svg { width: 90%; height: 90%; }
 .hucre.kazanan svg { animation: kazan .7s ease-in-out infinite alternate; filter: drop-shadow(0 0 8px #ffd34d) drop-shadow(0 0 3px #fff); }
 @keyframes kazan { from { transform: scale(1); } to { transform: scale(1.12); } }
 .hucre.donustu svg { animation: donus .5s cubic-bezier(.3,1.6,.5,1); }
@@ -231,6 +232,33 @@ body.coskulu .ampul.b { animation-delay: .12s; } body.coskulu .ampul.c { animati
 .kb-secim .deger { font-size: 22px; font-weight: 900; min-height: 30px; color: var(--altin); }
 .kb-secim .acildi svg { animation: none; transform: scale(1.12); filter: drop-shadow(0 0 22px #ffd34d); }
 .kb-secim .soldu { opacity: .45; } .kb-secim .soldu .deger { color: #ddd; font-size: 17px; }
+/* yeni slot mekanikleri */
+.hucre.patla svg { animation: patlaS .33s ease-in forwards; }
+@keyframes patlaS { 40% { transform: scale(1.35); filter: brightness(2) drop-shadow(0 0 12px #fff); } 100% { transform: scale(0) rotate(40deg); opacity: 0; } }
+.makara.genis { box-shadow: inset 0 0 0 3px #ffd34d, inset 0 0 30px #b48cff, 0 0 18px #b48cff; }
+.makara.genis .hucre svg { animation: kazan .5s ease-in-out infinite alternate; filter: drop-shadow(0 0 10px #d9b3ff); }
+.hucre.yapiskan { box-shadow: inset 0 0 0 3px #ffd34d, inset 0 0 18px #ffb300; border-radius: 6px; }
+.zincir { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 8px; background: #b14bff; color: #fff; font-weight: 900; font-size: 16px; box-shadow: 0 0 10px #b14bff; }
+.katla { margin-left: 8px; padding: 6px 12px; border-radius: 10px; border: 0; font-weight: 900; font-size: 14px; cursor: pointer; color: #fff; background: linear-gradient(180deg, #ff5a4e, #a30000); box-shadow: 0 3px 0 #5a0000, 0 0 12px #ff3b3b; animation: nabiz .9s infinite; }
+#tkKat { position: absolute; inset: 0; z-index: 6; display: none; background: #000d; border-radius: 14px; padding: 4px; }
+#tkKat.acik { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4px; }
+#tkKat .tk { border-radius: 8px; background: radial-gradient(circle, #233, #011); display: grid; place-items: center; position: relative; box-shadow: inset 0 0 0 1px #ffd34d33; }
+#tkKat .tk svg { width: 78%; height: 78%; animation: donus .5s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 0 8px #ffd34d); }
+#tkKat .tk b { position: absolute; bottom: 6%; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px #000, 0 0 6px #000; }
+#tkKat .tk b.ozel { color: #ff5a8a; font-size: 13px; }
+#tkUst { position: absolute; left: 0; right: 0; top: -36px; text-align: center; font-weight: 900; color: #ffd34d; font-size: 18px; text-shadow: 0 0 10px #000; z-index: 7; display: none; }
+#tkUst.acik { display: block; }
+#tkUst i { font-style: normal; display: inline-block; min-width: 26px; padding: 0 6px; margin-left: 6px; border-radius: 8px; background: #ffd34d; color: #231600; }
+.kart-kumar { width: 130px; height: 184px; margin: 10px auto; border-radius: 12px; display: grid; place-items: center; font-size: 76px; font-weight: 900; background: #fff; box-shadow: 0 10px 30px #000a; transition: transform .35s; }
+.kart-kumar.arka { background: repeating-linear-gradient(45deg, #b0110f 0 8px, #8a0000 8px 16px); border: 6px solid #fff; }
+.kart-kumar.cevir { transform: rotateY(90deg); }
+.kumar-dugme { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.kumar-dugme button { padding: 16px; border-radius: 14px; border: 0; font-weight: 900; font-size: 18px; color: #fff; cursor: pointer; }
+.kumar-gecmis { display: flex; gap: 6px; justify-content: center; margin: 8px 0; font-size: 22px; min-height: 28px; }
+.yukle-secim { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.yukle-secim button { padding: 16px 6px; border-radius: 14px; border: 0; font-weight: 900; font-size: 18px; cursor: pointer; color: #231600; background: linear-gradient(180deg, #fff1a6, var(--altin) 50%, #e2a017); box-shadow: 0 3px 0 #8a5a00; }
+#ozelDon { width: 150px; height: 150px; margin: 12px auto; border-radius: 20px; background: var(--makara); display: grid; place-items: center; box-shadow: 0 0 0 4px #ffd34d, 0 0 40px #b48cff; }
+#ozelDon svg { width: 86%; height: 86%; }
 /* gök yarılması, deprem, büyü */
 #gok { position: fixed; inset: 0; z-index: 32; pointer-events: none; }
 #gok svg { width: 100%; height: 100%; }
@@ -322,13 +350,15 @@ body.deprem #uygulama, body.deprem #digerOyun .kabuk { animation: deprem .09s li
 
   <div class="bakiye-kutu">
     <div><div class="etiket">BAKİYE</div><div class="bakiye-deger">0 ₺</div></div>
-    <button class="yukle">+1.000 ₺ YÜKLE</button>
+    <button class="yukle">+ PARA YÜKLE</button>
   </div>
 
   <div class="cerceve" id="cerceve">
     <div id="patlama"></div>
+    <div id="tkUst">SİKKE BONUSU · HAK <i id="tkHak">3</i></div>
     <div class="makaralar" id="makaralar">
       <svg id="cizgiler"></svg>
+      <div id="tkKat"></div>
     </div>
   </div>
 
@@ -363,7 +393,7 @@ body.deprem #uygulama, body.deprem #digerOyun .kabuk { animation: deprem .09s li
     <div class="ikramiye"><span class="ad">İKRAMİYE</span><span class="ikramiye-deger">0</span></div>
     <div class="bakiye-kutu">
       <div><div class="etiket">BAKİYE</div><div class="bakiye-deger">0 ₺</div></div>
-      <button class="yukle">+1.000 ₺ YÜKLE</button>
+      <button class="yukle">+ PARA YÜKLE</button>
     </div>
     <div class="lobi-baslik">🎰 SLOTLAR</div>
     <div id="oyunlar" style="display:flex;flex-direction:column;gap:12px"></div>
@@ -410,6 +440,31 @@ body.deprem #uygulama, body.deprem #digerOyun .kabuk { animation: deprem .09s li
   </div>
 </div>
 <div id="digerOyun"></div>
+<div class="katman" id="kumarKatman">
+  <div class="kart" style="text-align:center">
+    <h2>KATLA! 🃏</h2>
+    <div id="kumarTutar" style="font-size:22px;font-weight:900;color:#fff"></div>
+    <div class="kumar-gecmis" id="kumarGecmis"></div>
+    <div class="kart-kumar arka" id="kumarKart"></div>
+    <div id="kumarBilgi" style="font-weight:800;color:#ffe3a0;min-height:22px">Kart kırmızı mı siyah mı?</div>
+    <div class="kumar-dugme"><button id="kumarKirmizi" style="background:linear-gradient(180deg,#ff5a4e,#a30000)">♥ KIRMIZI</button><button id="kumarSiyah" style="background:linear-gradient(180deg,#555,#111)">♠ SİYAH</button></div>
+    <button class="kapat" id="kumarTopla">TOPLA</button>
+  </div>
+</div>
+<div class="katman" id="yukleKatman">
+  <div class="kart" style="text-align:center">
+    <h2>Kasaya para yükle</h2>
+    <div class="yukle-secim"><button data-yukle="50">+50 ₺</button><button data-yukle="100">+100 ₺</button><button data-yukle="200">+200 ₺</button><button data-yukle="500">+500 ₺</button><button data-yukle="1000">+1.000 ₺</button><button data-yukle="2000">+2.000 ₺</button></div>
+    <button class="kapat" data-kapat style="background:#ffffff1a;color:#fff">Vazgeç</button>
+  </div>
+</div>
+<div class="katman" id="ozelKatman">
+  <div style="text-align:center">
+    <div id="buyukBaslik2" style="font-size:30px;font-weight:900;color:#ffd34d;text-shadow:0 0 16px #b48cff">GENİŞLEYEN SEMBOL</div>
+    <div id="ozelDon"></div>
+    <div id="ozelAd" style="font-size:20px;font-weight:900;color:#fff;min-height:28px"></div>
+  </div>
+</div>
 <div id="gok"></div>
 <div id="buyu"></div>
 <div id="flas"></div>
@@ -442,13 +497,30 @@ const kaydet = () => { try { localStorage.setItem(ANAHTAR, JSON.stringify(D)); }
 
 let TEMA = TEMALAR[D.tema];
 let donuyor = false, otoAcik = false, bedavaKalan = 0, bedavaToplam = 0, bedavaToplamAdet = 0, cizgiDongu = null, oyunda = false;
-let goruntu = M.SERITLER.map((s, m) => [0, 1, 2].map(k => s[(m * 7 + k) % s.length])); // ekrandaki izgara
+let MK = M.makine(D.tema);   // aktif slot makinesi (kurallar motor.js'de)
+let goruntu = MK.cevir();     // ekrandaki ızgara [makara][satır]
+let bonus = { ozel: null, yapiskan: [] }; // bedava dönüş durumu (büyücü özel sembol, korsan yapışkan jokerler)
 
 // sembol çizimi (etiketsiz: büyük gösterimler için JOKER/BONUS yazısı olmadan)
 const svg = (k, ek = '', etiketsiz = false, tema = TEMA) => {
-  const et = !etiketsiz && TEMA_ETIKET[k] ? TEMA_ETIKET[k](...tema.etiketRenk[k]) : '';
-  return `<svg viewBox="0 0 100 100" ${ek}>${tema.sembol[k].c}${et}</svg>`;
+  if (k[0] === 'B') return bombaSvg(+k.slice(1), ek);
+  if (k === 'O') return paraSvg(ek);
+  const sb = tema.sembol[k] || tema.sembol.Y;
+  const et = !etiketsiz && TEMA_ETIKET[k] && tema.etiketRenk[k] ? TEMA_ETIKET[k](...tema.etiketRenk[k]) : '';
+  return `<svg viewBox="0 0 100 100" ${ek}>${sb.c}${et}</svg>`;
 };
+// şeker bombası (bedava dönüşte çarpan) ve kuzu sikkesi
+const bombaSvg = (x, ek = '') => `<svg viewBox="0 0 100 100" ${ek}><circle cx="50" cy="50" r="46" fill="url(#gPariltiPembe)"/>
+  <path d="M60 22 Q70 8 82 12" stroke="#6b4426" stroke-width="4" fill="none"/><circle cx="84" cy="11" r="5" fill="#ffd23f"/>
+  <circle cx="48" cy="56" r="32" fill="url(#gMor)" stroke="#3a0b57" stroke-width="3"/>
+  <ellipse cx="38" cy="42" rx="9" ry="6" fill="#ffffff88" transform="rotate(-30 38 42)"/>
+  <text x="48" y="67" text-anchor="middle" font-size="${x >= 100 ? 24 : 30}" font-weight="900" font-family="Arial Black, Arial" fill="#fff" stroke="#3a0b57" stroke-width="3" paint-order="stroke">×${x}</text></svg>`;
+const paraSvg = (ek = '') => `<svg viewBox="0 0 100 100" ${ek}><circle cx="50" cy="50" r="44" fill="url(#gParilti)"/>
+  <circle cx="50" cy="52" r="36" fill="#8a5300"/><circle cx="50" cy="49" r="36" fill="url(#gAltin)"/>
+  <circle cx="50" cy="49" r="27" fill="none" stroke="#a86a00" stroke-width="3"/>
+  ${[[44, 45, 9], [56, 45, 9], [50, 52, 10]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff8e0" stroke="#c9a15a" stroke-width="1.5"/>`).join('')}
+  <ellipse cx="50" cy="40" rx="7" ry="8" fill="#5a4a3a"/>
+  <path d="M30 30 A28 28 0 0 1 46 22" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/></svg>`;
 
 // ---------- ses: efekt / müzik / salon ortamı ayrı kanallar ----------
 let AC = null, efektBus, muzikBus, ortamBus;
@@ -705,23 +777,31 @@ function flas() { const f = $('flas'); f.classList.remove('yak'); void f.offsetW
 let coskuZ;
 function coskulu(ms) { document.body.classList.add('coskulu'); clearTimeout(coskuZ); coskuZ = setTimeout(() => document.body.classList.remove('coskulu'), ms); }
 
-// ---------- makaralar ----------
+// ---------- makaralar (oyuna göre 5x3 ya da 6x5) ----------
 const makaralarEl = $('makaralar');
-const makaraEl = [], seritEl = [];
-for (let m = 0; m < 5; m++) {
-  const mk = document.createElement('div'); mk.className = 'makara';
-  const s = document.createElement('div'); s.className = 'serit';
-  mk.appendChild(s); makaralarEl.insertBefore(mk, $('cizgiler'));
-  makaraEl.push(mk); seritEl.push(s);
+let makaraEl = [], seritEl = [];
+function makaraKur() {
+  makaralarEl.querySelectorAll('.makara').forEach(e => e.remove());
+  makaraEl = []; seritEl = [];
+  for (let m = 0; m < MK.sutun; m++) {
+    const mk = document.createElement('div'); mk.className = 'makara';
+    const s = document.createElement('div'); s.className = 'serit';
+    mk.appendChild(s); makaralarEl.insertBefore(mk, $('cizgiler'));
+    makaraEl.push(mk); seritEl.push(s);
+  }
+  makaralarEl.style.setProperty('--sutun', MK.sutun);
+  makaralarEl.style.setProperty('--satir', MK.satir);
+  makaralarEl.classList.toggle('kume', MK.c.mod === 'kume');
+  goruntu.forEach((k, m) => makaraCiz(m, k));
 }
 const hucreHtml = k => `<div class="hucre" data-k="${k}">${svg(k)}</div>`;
 function makaraCiz(m, semboller) { seritEl[m].style.transition = 'none'; seritEl[m].style.transform = 'translateY(0)'; seritEl[m].innerHTML = semboller.map(hucreHtml).join(''); }
 let H = 80, CW = 80;
 function boyutla() {
-  const w = makaralarEl.clientWidth - 8 - 16;
-  CW = w / 5;
-  const bos = innerHeight - 545; // diğer öğelerin kapladığı yaklaşık yükseklik; uzun ekranda makaralar dikeyde uzar
-  H = Math.floor(Math.max(CW, Math.min(bos / 3, CW * 1.3)));
+  const w = makaralarEl.clientWidth - 8 - 4 * (MK.sutun - 1);
+  CW = w / MK.sutun;
+  const bos = innerHeight - 545; // diğer öğelerin kapladığı yaklaşık yükseklik
+  H = MK.satir === 3 ? Math.floor(Math.max(CW, Math.min(bos / 3, CW * 1.3))) : Math.floor(Math.max(40, Math.min(CW, bos / MK.satir)));
   makaralarEl.style.setProperty('--h', H + 'px');
   ampulKur($('cerceve'), 20);
 }
@@ -740,14 +820,14 @@ addEventListener('resize', () => { boyutla(); ampulKur($('tabela'), 22); if (!do
 
 function makaraDondur(m, hedef, sure) {
   return new Promise(res => {
-    const s = M.SERITLER[m], L = s.length;
+    const s = MK.seritler[m], L = s.length;
     const dolgu = Math.round(sure / 45);
     const st = Math.floor(Math.random() * L);
     const ara = Array.from({ length: dolgu }, (_, i) => s[(st + i) % L]);
     const liste = [...hedef, ...ara, ...goruntu[m]]; // üstte yeni, altta eski — aşağı doğru akar
     seritEl[m].style.transition = 'none';
     seritEl[m].innerHTML = liste.map(hucreHtml).join('');
-    seritEl[m].style.transform = `translateY(${-(liste.length - 3) * H}px)`;
+    seritEl[m].style.transform = `translateY(${-(liste.length - MK.satir) * H}px)`;
     void seritEl[m].offsetHeight;
     seritEl[m].style.transition = `transform ${sure}ms cubic-bezier(.22,.62,.28,1.06)`;
     seritEl[m].style.transform = 'translateY(0)';
@@ -755,6 +835,24 @@ function makaraDondur(m, hedef, sure) {
     const son = () => { if (bitti) return; bitti = true; seritEl[m].removeEventListener('transitionend', son); makaraCiz(m, hedef); res(); };
     seritEl[m].addEventListener('transitionend', son);
     setTimeout(son, sure + 120); // yedek
+  });
+}
+// düşme: silinen hücrelerin yerine üstten yeniler kayar
+function dusur(yeni, silinen) {
+  return new Promise(res => {
+    let enUzun = 0;
+    yeni.forEach((kol, m) => {
+      const n = silinen.filter(h => h[0] === m).length;
+      if (!n) return;
+      makaraCiz(m, kol);
+      seritEl[m].style.transform = `translateY(${-n * H}px)`;
+      void seritEl[m].offsetHeight;
+      const sure = 260 + n * 45; enUzun = Math.max(enUzun, sure);
+      seritEl[m].style.transition = `transform ${sure}ms cubic-bezier(.5,0,.75,1.15)`;
+      seritEl[m].style.transform = 'translateY(0)';
+      setTimeout(() => ton(180 + m * 20, .07, { tip: 'triangle', ses: .07 }), sure - 30);
+    });
+    setTimeout(res, enUzun + 40);
   });
 }
 
@@ -765,6 +863,7 @@ function cizgiTemizle() {
   $('cizgiler').innerHTML = '';
   makaralarEl.classList.remove('soluk');
   makaralarEl.querySelectorAll('.kazanan').forEach(e => e.classList.remove('kazanan'));
+  makaraEl.forEach(e => e.classList.remove('genis'));
 }
 function hucreIsaretle(liste) {
   makaralarEl.querySelectorAll('.kazanan').forEach(e => e.classList.remove('kazanan'));
@@ -773,7 +872,7 @@ function hucreIsaretle(liste) {
 function cizgiCiz(cizgiler) {
   const svgEl = $('cizgiler'), gap = 4;
   svgEl.innerHTML = cizgiler.map(c => {
-    const nok = M.CIZGILER[c.no].map((r, m) => `${m * (CW + gap) + CW / 2},${r * H + H / 2}`).join(' ');
+    const nok = MK.cizgiler[c.no].map((r, m) => `${m * (CW + gap) + CW / 2},${r * H + H / 2}`).join(' ');
     return `<polyline points="${nok}" stroke="${RENK[c.no]}"/>`;
   }).join('');
 }
@@ -782,20 +881,24 @@ function kazancGoster(sonuc) {
   if (!sonuc.kazanc) return;
   makaralarEl.classList.add('soluk');
   hucreIsaretle(sonuc.hucreler);
+  if (!sonuc.cizgiler) return;
   cizgiCiz(sonuc.cizgiler);
-  const parcalarK = [...sonuc.cizgiler.map(c => ({ c })), ...(sonuc.dagKazanc ? [{ d: true }] : [])];
+  const parcalarK = sonuc.cizgiler.map(c => ({ c }));
   if (parcalarK.length < 2) return;
   let i = 0;
   cizgiDongu = setInterval(() => { // boşta: çizgileri tek tek göster
     const p = parcalarK[i++ % parcalarK.length];
-    if (p.c) { cizgiCiz([p.c]); hucreIsaretle(M.CIZGILER[p.c.no].slice(0, p.c.adet).map((r, m) => [m, r])); }
+    if (p.c) { cizgiCiz([p.c]); hucreIsaretle(MK.cizgiler[p.c.no].slice(0, p.c.adet).map((r, m) => [m, r])); }
     else { $('cizgiler').innerHTML = ''; hucreIsaretle(sonuc.hucreler.filter(([m, r]) => goruntu[m][r] === 'S')); }
   }, 1300);
 }
 
 // ---------- arayüz ----------
+const bedavaAciklama = () => { const b = MK.c.bedava || {};
+  return b.carpan > 1 ? '×' + b.carpan : b.tur === 'genisleyen' && bonus.ozel ? `${TEMA.sembol[bonus.ozel].ad} genişler` : b.tur === 'yapiskan' ? 'yapışkan jokerler'
+    : b.zincir ? 'çarpan ×3 → ×15' : b.bomba ? 'bombalar çarpar' : ''; };
 const sayacYazi = () => bedavaToplamAdet && (bedavaKalan > 0 || document.body.classList.contains('bedava-mod'))
-  ? `<div class="bedava-sayac">BEDAVA DÖNÜŞ ${bedavaToplamAdet - bedavaKalan}/${bedavaToplamAdet} · ×2</div>` : '';
+  ? `<div class="bedava-sayac">BEDAVA DÖNÜŞ ${bedavaToplamAdet - bedavaKalan}/${bedavaToplamAdet} · ${bedavaAciklama()}</div>` : '';
 function arayuz() {
   $$('.bakiye-deger').forEach(e => e.textContent = tl(D.bakiye));
   $('bahis').textContent = tl(BAHISLER[D.bahisNo]);
@@ -808,6 +911,7 @@ function arayuz() {
   $('oto').textContent = otoAcik ? 'DUR' : 'OTO';
   $('geriBtn').disabled = kilit;
   $$('.yukle').forEach(e => e.classList.toggle('nabiz', D.bakiye < BAHISLER[D.bahisNo] && !donuyor && !bedavaKalan));
+  document.querySelector('.kb-grup').style.display = MK.c.kumbara ? '' : 'none';
   const kb = D.kumbara / M.KUMBARA_HEDEF;
   $('kbDolu').style.width = (kb * 100) + '%';
   $('kbYazi').textContent = `${D.kumbara}/${M.KUMBARA_HEDEF}`;
@@ -840,17 +944,19 @@ function cerceveSalla() { const c = $('cerceve'); c.classList.remove('salla'); v
 
 // kıl payı: ilk iki karesi tutup üçüncüde kaçan çizgi (yalnız gösterim)
 function kilPayi(iz) {
-  const sira = M.CIZGILER.map((_, i) => i).sort(() => Math.random() - .5);
+  if (MK.c.mod !== 'cizgi') return -1;
+  const sira = MK.cizgiler.map((_, i) => i).sort(() => Math.random() - .5);
   for (const no of sira) {
-    const c = M.CIZGILER[no], s = c.map((r, m) => iz[m][r]);
-    const h = s[0] !== 'W' ? s[0] : s[1];
-    if (h === 'S' || h === 'W' || s.slice(0, 2).includes('S')) continue;
-    if (s.slice(0, 2).every(x => x === h || x === 'W') && s[2] !== h && s[2] !== 'W') return no;
+    const c = MK.cizgiler[no], s = c.map((r, m) => iz[m][r]);
+    const jk = x => x === 'W' && !MK.c.jokerYok;
+    const h = !jk(s[0]) ? s[0] : s[1];
+    if (h === 'S' || jk(h) || h === 'O' || s.slice(0, 2).includes('S') || s.slice(0, 2).includes('O')) continue;
+    if (s.slice(0, 2).every(x => x === h || jk(x)) && s[2] !== h && !jk(s[2])) return no;
   }
   return -1;
 }
 function kilPayiGoster(no) {
-  const c = M.CIZGILER[no], gap = 4;
+  const c = MK.cizgiler[no], gap = 4;
   const nok = c.slice(0, 3).map((r, m) => `${m * (CW + gap) + CW / 2},${r * H + H / 2}`).join(' ');
   $('cizgiler').innerHTML = `<polyline class="kil" points="${nok}" stroke="#ff3b3b"/>`;
   hucreIsaretle([[0, c[0]], [1, c[1]]]);
@@ -925,6 +1031,90 @@ function kumbaraAc(bahis) {
   });
 }
 
+// ---------- kuzu: tut & kazan ----------
+async function tutKazanOyna(tk, bahis) {
+  patlama('SİKKE BONUSU!', 'yesil'); SES.kazan3(); buyuYap(); titret([40, 40, 80]);
+  await bekle(1200);
+  const kat = $('tkKat'), ust = $('tkUst');
+  kat.innerHTML = Array.from({ length: 15 }, (_, i) => `<div class="tk" data-k="${i % 5},${Math.floor(i / 5)}"></div>`).join('');
+  kat.classList.add('acik'); ust.classList.add('acik');
+  let toplam = 0;
+  for (const kare of tk.kareler) {
+    $('tkHak').textContent = kare.hak;
+    for (const [k, v] of kare.yeni) {
+      const el = kat.querySelector(`[data-k="${k}"]`);
+      const tutar = MK.paraTL(v, bahis); toplam += tutar;
+      el.innerHTML = `${paraSvg()}<b class="${v.ad ? 'ozel' : ''}">${v.ad || tl(tutar)}</b>`;
+      SES.sikke(); ton(v.ad ? 1568 : 988, .15, { tip: 'triangle', ses: .12 }); titret(15);
+      await bekle(170);
+    }
+    mesaj(`SİKKE BONUSU <b>${tl(toplam)}</b>`);
+    if (kare.yeni.length) cerceveSalla();
+    await bekle(kare.yeni.length ? 700 : 600);
+  }
+  if (tk.tam) { await buyukGoster('BÜYÜK İKRAMİYE!', tk.toplam, 'Bütün kareler doldu!'); }
+  else { patlama(tl(tk.toplam), 'yesil'); SES.kazan(5); SES.sikkeler(12); fiskiye(900); await bekle(1400); }
+  kat.classList.remove('acik'); ust.classList.remove('acik');
+}
+
+// ---------- büyücü: bedava dönüşte genişleyen sembol seçimi ----------
+function ozelSec() {
+  return new Promise(async res => {
+    const adaylar = ['N', 'A', 'U', 'P', 'C', 'Y'];
+    const secilen = rasgele(adaylar);
+    $('ozelKatman').classList.add('acik'); $('ozelAd').textContent = '';
+    for (let i = 0; i < 22; i++) {
+      $('ozelDon').innerHTML = svg(i === 21 ? secilen : adaylar[i % adaylar.length], '', true);
+      ton(900 + i * 30, .04, { tip: 'square', ses: .05 });
+      await bekle(60 + i * 9);
+    }
+    $('ozelAd').textContent = TEMA.sembol[secilen].ad + ' genişleyecek!';
+    buyuYap(); SES.carpan();
+    await bekle(1800);
+    $('ozelKatman').classList.remove('acik');
+    res(secilen);
+  });
+}
+
+// ---------- ateşli 7: kazancı ikiye katlama (kart rengi; adil %50) ----------
+let kumarTutar = 0, kumarAdim = 0, kumarGecmis = [];
+function kumarAc(tutar) {
+  kumarTutar = tutar; kumarAdim = 0;
+  $('kumarKart').className = 'kart-kumar arka'; $('kumarKart').textContent = '';
+  $('kumarTutar').textContent = `Kazancın: ${tl(kumarTutar)} → ${tl(kumarTutar * 2)}`;
+  $('kumarBilgi').textContent = 'Kart kırmızı mı siyah mı?';
+  $('kumarGecmis').innerHTML = kumarGecmis.slice(-6).map(k => `<span style="color:${'♥♦'.includes(k) ? '#ff5a4e' : '#ddd'}">${k}</span>`).join('');
+  $('kumarKirmizi').disabled = $('kumarSiyah').disabled = false;
+  $('kumarKatman').classList.add('acik');
+}
+async function kumarTahmin(kirmizi) {
+  $('kumarKirmizi').disabled = $('kumarSiyah').disabled = true;
+  const kart = rasgele(['♥', '♦', '♠', '♣']), dogru = '♥♦'.includes(kart) === kirmizi;
+  const el = $('kumarKart'); el.classList.add('cevir');
+  ton(600, .08, { tip: 'square', ses: .06 });
+  await bekle(350);
+  el.className = 'kart-kumar'; el.textContent = kart; el.style.color = '♥♦'.includes(kart) ? '#d00' : '#111';
+  kumarGecmis.push(kart);
+  $('kumarGecmis').innerHTML = kumarGecmis.slice(-6).map(k => `<span style="color:${'♥♦'.includes(k) ? '#ff5a4e' : '#ddd'}">${k}</span>`).join('');
+  if (dogru) {
+    D.bakiye += kumarTutar; kumarTutar *= 2; kumarAdim++; kaydet(); arayuz(); bakiyeYanip();
+    SES.kazan(5); SES.sikkeler(6); titret([30, 30, 60]); fiskiye(500);
+    if (kumarAdim >= 5) { $('kumarBilgi').textContent = `Sınır! ${tl(kumarTutar)} kasada 🎉`; await bekle(1500); return kumarKapat(); }
+    $('kumarBilgi').textContent = `Bildin! ${tl(kumarTutar)} — devam mı, topla mı?`;
+    $('kumarTutar').textContent = `Kazancın: ${tl(kumarTutar)} → ${tl(kumarTutar * 2)}`;
+    await bekle(900);
+    el.className = 'kart-kumar arka'; el.textContent = '';
+    $('kumarKirmizi').disabled = $('kumarSiyah').disabled = false;
+  } else {
+    D.bakiye -= kumarTutar; kaydet(); arayuz();
+    $('kumarBilgi').textContent = `Olmadı… ${tl(kumarTutar)} gitti.`;
+    ton(330, .2, { tip: 'square', ses: .08 }); ton(220, .4, { tip: 'square', ses: .08, gec: .2 }); titret(80);
+    mesaj('Katlama kaybetti 😬');
+    await bekle(1400); kumarKapat();
+  }
+}
+function kumarKapat() { $('kumarKatman').classList.remove('acik'); }
+
 // ---------- oyun döngüsü ----------
 async function cevir() {
   if (donuyor) return;
@@ -932,7 +1122,7 @@ async function cevir() {
   const bedavada = bedavaKalan > 0;
   if (!bedavada && D.bakiye < bahis) {
     otoAcik = false; arayuz();
-    toast('Bakiye yetersiz — yükle butonuna bas'); titret(80); return;
+    toast('Bakiye yetersiz — PARA YÜKLE'); titret(80); return;
   }
   donuyor = true;
   cizgiTemizle();
@@ -941,55 +1131,97 @@ async function cevir() {
   arayuz(); kaydet();
   SES.cevir(); titret(15);
 
-  const o = M.oyna(bahis, bedavada);
-  const sonuc = o.sonuc;
-  // bekletme: ilk makaralarda 2 bonus gelmişse kalanlar uzun döner (gerilim)
+  const o = MK.oyna(bahis, { bedavada, ozel: bonus.ozel, yapiskan: bonus.yapiskan });
+  // bekletme: bonusa bir sembol kalmışsa kalan makaralar uzun döner (gerilim)
+  const esikS = (MK.c.bedava?.esik || 3) - 1;
   const sSay = o.ilk.map(k => k.filter(x => x === 'S').length);
+  const hiz = MK.c.kumar ? .7 : 1;
   let onceki = 0, ek = 0;
-  const plan = o.ilk.map((_, m) => { const bek = onceki >= 2; if (bek) ek += 1000; onceki += sSay[m]; return { sure: 850 + m * 230 + ek, bek }; });
+  const plan = o.ilk.map((_, m) => { const bek = onceki >= esikS; if (bek) ek += 1000; onceki += sSay[m]; return { sure: (850 + m * 230) * hiz + ek, bek }; });
   makaralarEl.classList.add('donuyor');
   let kazanSay = 0;
   await Promise.all(o.ilk.map((hedef, m) => bekle(m * 30).then(() => makaraDondur(m, hedef, plan[m].sure)).then(() => {
     SES.dur(m); makaraEl[m].classList.remove('bekleyis');
     const yeniS = hedef.filter(x => x === 'S').length;
     if (yeniS) { kazanSay += yeniS; ton(700 + kazanSay * 150, .25, { tip: 'sine', ses: .15 }); }
+    if (hedef.includes('O')) SES.sikke();
     const sonra = plan.findIndex((p, j) => j > m && p.bek && !makaraEl[j].classList.contains('bekleyis') && !makaraEl[j].dataset.durdu);
     makaraEl[m].dataset.durdu = '1';
     if (sonra === m + 1) { makaraEl[sonra].classList.add('bekleyis'); SES.gerilim((plan[sonra].sure - plan[m].sure) / 1000); coskulu(1500); }
   })));
   makaraEl.forEach(e => { delete e.dataset.durdu; e.classList.remove('bekleyis'); });
   makaralarEl.classList.remove('donuyor');
-  goruntu = o.ilk;
+  goruntu = o.ilk.map(k => k.slice());
+  if (bedavada && MK.c.bedava?.tur === 'yapiskan') bonus.yapiskan.forEach(h => { const [m, r] = h.split(',').map(Number); seritEl[m].children[r]?.classList.add('yapiskan'); });
 
-  if (o.yagmur.length) { // yağmur: kareler tek tek jokere döner
-    patlama(TEMA.yagmurAd, 'yesil'); buyuYap(); yagmurBaslat(1400, TEMA.parcacik, 1); SES.yagmur(); titret(30); coskulu(2000);
-    await bekle(750);
-    for (const [m, r] of o.yagmur) {
-      const h = seritEl[m].children[r];
-      h.dataset.k = 'W'; h.innerHTML = svg('W'); h.classList.add('donustu');
-      SES.pop(); titret(15);
-      await bekle(330);
+  // aşamalar: yağmur, çizgi, patlama-düşme, genişleme, bomba, çarpan, dağınık
+  let ekran = 0, zincirNo = 0;
+  const kazYaz = (ek = '') => mesaj(`KAZANÇ <b>${tl(ekran)}</b>${ek}${sayacYazi()}`);
+  for (const a of o.asamalar) {
+    if (a.tip === 'yagmur') {
+      patlama(TEMA.yagmurAd, 'yesil'); buyuYap(); yagmurBaslat(1400, TEMA.parcacik, 1); SES.yagmur(); titret(30); coskulu(2000);
+      await bekle(750);
+      for (const [m, r] of a.hucreler) {
+        const h = seritEl[m].children[r];
+        h.dataset.k = 'W'; h.innerHTML = svg('W'); h.classList.add('donustu');
+        goruntu[m][r] = 'W'; SES.pop(); titret(15);
+        await bekle(330);
+      }
+      await bekle(250);
+    } else if (a.tip === 'cizgi') {
+      ekran += a.sonuc.kazanc; kazancGoster(a.sonuc); kazYaz();
+      await bekle(350);
+    } else if (a.tip === 'patlat') {
+      makaralarEl.classList.add('soluk'); hucreIsaretle(a.sonuc.hucreler);
+      ekran += a.sonuc.kazanc;
+      kazYaz(a.carp > 1 ? `<span class="zincir">×${a.carp}</span>` : '');
+      if (a.carp > 1 && MK.c.mod === 'yollar') patlama(`×${a.carp}`, 'mor');
+      SES.kazan(Math.min(5, 3 + zincirNo)); titret(20);
+      await bekle(700);
+      a.sonuc.hucreler.forEach(([m, r]) => seritEl[m].children[r]?.classList.add('patla'));
+      SES.pop(); gurultu(.2, { ses: .15, frek: 3000 });
+      const k0 = makaralarEl.getBoundingClientRect();
+      a.sonuc.hucreler.slice(0, 5).forEach(([m, r]) => sikkePatlat(k0.left + 4 + m * (CW + 4) + CW / 2, k0.top + 4 + r * H + H / 2, 6));
+      await bekle(340);
+      makaralarEl.classList.remove('soluk'); makaralarEl.querySelectorAll('.kazanan').forEach(e => e.classList.remove('kazanan'));
+      await dusur(a.izgaraSonra, a.sonuc.hucreler);
+      goruntu = a.izgaraSonra.map(k => k.slice());
+      zincirNo++;
+      await bekle(150);
+    } else if (a.tip === 'genislet') {
+      patlama('GENİŞLEYEN SEMBOL!', 'mor'); SES.carpan(); buyuYap(); coskulu(2500);
+      await bekle(500);
+      for (const m of a.makaralar) { makaraCiz(m, Array(MK.satir).fill(a.sembol)); makaraEl[m].classList.add('genis'); goruntu[m] = Array(MK.satir).fill(a.sembol); SES.pop(); titret(20); await bekle(300); }
+      ekran += a.kazanc; kazYaz();
+      if (a.kazanc >= bahis * 5) { flas(); deprem(600); }
+      await bekle(900);
+    } else if (a.tip === 'bomba') {
+      for (const [m, r] of a.bombalar) { seritEl[m].children[r]?.classList.add('kazanan'); SES.pop(); await bekle(260); }
+      patlama(`×${a.carp}`, 'mor'); SES.carpan(); titret([40, 30, 80]);
+      if (a.carp >= 10) gokYarilsin(); else flas();
+      deprem(600);
+      ekran = a.onceki * a.carp; kazYaz();
+      await bekle(1000);
+    } else if (a.tip === 'carpan') {
+      kazYaz(); SES.kazan(3);
+      await bekle(650);
+      patlama(`×${a.x}<br><span style="font-size:.5em">ŞANS ÇARPANI</span>`, 'mor'); SES.carpan(); titret([40, 30, 80]);
+      cerceveSalla(); fiskiye(600); if (a.x >= 3) gokYarilsin(); else flas();
+      ekran = a.onceki * a.x;
+      await bekle(900);
+    } else if (a.tip === 'dagilim') {
+      hucreIsaretle(a.hucreler); ekran += a.kazanc; kazYaz(); SES.kazan3();
+      await bekle(700);
     }
-    goruntu = o.izgara;
-    await bekle(250);
   }
+  if (o.tutKazan) await tutKazanOyna(o.tutKazan, bahis);
 
-  let k = sonuc.kazanc;
-  const ikramiyeVar = sonuc.cizgiler.some(c => c.sembol === 'W' && c.adet === 5);
+  const k = o.kazanc;
   if (k > 0) {
     D.bakiye += k; D.toplamKazanc += k; D.enBuyuk = Math.max(D.enBuyuk, k);
     if (bedavada) bedavaToplam += k;
-    kazancGoster(sonuc);
-    if (o.carpan > 1) { // çarpan: önce çarpansız tutar, sonra patlamayla çarpılmış hali
-      mesaj(`KAZANÇ <b>${tl(k / o.carpan)}</b>${sayacYazi()}`);
-      SES.kazan(3);
-      await bekle(650);
-      patlama(`×${o.carpan}<br><span style="font-size:.5em">ŞANS ÇARPANI</span>`, 'mor'); SES.carpan(); titret([40, 30, 80]);
-      cerceveSalla(); fiskiye(600); if (o.carpan >= 3) gokYarilsin(); else flas();
-      await bekle(900);
-    }
     const kat = k / bahis;
-    if (kat >= 15) {
+    if (kat >= 15 && !o.tutKazan?.tam) {
       SES.buyuk(); titret([60, 40, 60, 40, 120]);
       mesaj(`KAZANÇ <b>${tl(k)}</b>${sayacYazi()}`, true);
       await buyukGoster(kat >= 50 ? 'MUHTEŞEM!' : kat >= 30 ? 'DEV KAZANÇ!' : 'BÜYÜK KAZANÇ!', k, null, otoAcik || bedavaKalan > 0 ? 3800 : 0);
@@ -1002,18 +1234,25 @@ async function cevir() {
       sayac($('kazB'), k, kat >= 2 ? 700 : 300);
       bakiyeYanip();
     }
+    // ateşli 7: katlama teklifi
+    if (MK.c.kumar && !bedavada && !otoAcik) setTimeout(() => {
+      const b = document.createElement('button'); b.className = 'katla'; b.textContent = 'KATLA ×2';
+      b.onclick = e => { e.stopPropagation(); sesBaslat(); b.remove(); kumarAc(k); };
+      $('mesaj').appendChild(b);
+    }, 750);
   } else if (!bedavada) {
     const kp = Math.random() < .7 ? kilPayi(goruntu) : -1;
     if (kp >= 0) kilPayiGoster(kp);
-    mesaj(sonuc.dagink === 2 ? `Bonusa 1 ${TEMA.sembol.S.ad.toLocaleLowerCase('tr-TR')} kaldı! 😱`
+    const sAd = TEMA.sembol.S.ad.toLocaleLowerCase('tr-TR');
+    mesaj(o.ilk.flat().filter(x => x === 'S').length === esikS ? `Bonusa 1 ${sAd} kaldı! 😱`
+      : o.ilk.flat().filter(x => x === 'O').length >= (MK.c.tutKazan || 99) - 1 ? 'Sikke bonusuna 1 sikke kaldı! 😱'
       : kp >= 0 ? rasgele(['Kıl payı! 😱', 'Ahh, az kaldı!', 'Neredeyse geliyordu!'])
       : D.isi >= 80 ? rasgele(['🔥 Makine kızıştı, büyük kazanç yakın!', '🔥 Bırakma, sıra sende!', '🔥 Makine vermek üzere!'])
       : D.isi >= 50 ? rasgele(['Makine ısınıyor 🔥', 'Bir sonraki senin olabilir!', 'Sabreden kazanır!'])
       : rasgele(['Bir dahakine!', 'Şans dönüyor…', 'Devam!', 'Yakında!']));
   }
-  // makine ısısı: kayıpta ısınır, iyi kazançta soğur (yalnız gösterim)
   if (!bedavada) D.isi = k >= bahis * 2 ? Math.max(5, D.isi - (k >= bahis * 10 ? 80 : 35)) : Math.min(100, D.isi + (k > 0 ? 2 : 6));
-  if (ikramiyeVar) { // 5 joker bir çizgide: ikramiye (tamamı en yüksek bahiste)
+  if (o.ikramiye) { // 5 joker bir çizgide: ikramiye (tamamı en yüksek bahiste)
     const pay = Math.round(D.ikramiye * bahis / BAHISLER[BAHISLER.length - 1] * 100) / 100;
     D.ikramiye = IKRAMIYE_TABAN + Math.random() * 2000;
     D.bakiye += pay; D.toplamKazanc += pay; D.enBuyuk = Math.max(D.enBuyuk, pay); kaydet(); arayuz();
@@ -1021,30 +1260,34 @@ async function cevir() {
     akisYaz(`💥 İKRAMİYE PATLADI! SEN · <b>${tl(pay)}</b>`, true);
     await buyukGoster('İKRAMİYE!', pay, bahis < BAHISLER[BAHISLER.length - 1] ? 'Tamamı için en yüksek bahisle oyna!' : 'Devam etmek için dokun', 0, true);
   }
-  if (!bedavada) { // kumbara
+  if (!bedavada && MK.c.kumbara) {
     D.kumbara++;
     arayuz();
     if (D.kumbara >= M.KUMBARA_HEDEF) { D.kumbara = 0; kaydet(); await bekle(k > 0 ? 900 : 300); await kumbaraAc(bahis); }
   }
+  if (bedavada && o.yeniYapiskan) bonus.yapiskan = o.yeniYapiskan;
   donuyor = false;
   kaydet(); arayuz();
 
-  if (sonuc.bedava) {
+  if (o.bedava) {
     const ilkTetik = !bedavada;
-    if (ilkTetik) { bedavaToplam = 0; bedavaToplamAdet = 0; }
-    bedavaKalan += sonuc.bedava; bedavaToplamAdet += sonuc.bedava;
+    if (ilkTetik) { bedavaToplam = 0; bedavaToplamAdet = 0; bonus = { ozel: null, yapiskan: [] }; }
+    bedavaKalan += o.bedava; bedavaToplamAdet += o.bedava;
     SES.kazan3(); titret([80, 50, 80]);
     document.body.classList.add('bedava-mod');
     Muzik.hiz = 1.15;
     gokYarilsin(); setTimeout(buyuYap, 300); setTimeout(() => deprem(900), 400);
     await bekle(900);
-    await buyukGoster(ilkTetik ? `${sonuc.bedava} BEDAVA DÖNÜŞ!` : `+${sonuc.bedava} BEDAVA DÖNÜŞ!`, null, 'Tüm kazançlar ×2 · başlamak için dokun', otoAcik ? 3000 : 0);
+    await buyukGoster(ilkTetik ? `${o.bedava} BEDAVA DÖNÜŞ!` : `+${o.bedava} BEDAVA DÖNÜŞ!`, null, `${bedavaAciklama() || 'Bol şans'} · başlamak için dokun`, otoAcik ? 3000 : 0);
+    if (ilkTetik && MK.c.bedava?.tur === 'genisleyen') bonus.ozel = await ozelSec();
     arayuz();
   }
-  if (bedavaKalan > 0) { await bekle(sonuc.kazanc ? 1100 : 500); return cevir(); }
+  if (bedavaKalan > 0) { await bekle(k ? 1100 : 500); return cevir(); }
   if (bedavada) { // bedava dönüşler bitti
     document.body.classList.remove('bedava-mod');
     Muzik.hiz = 1;
+    bonus = { ozel: null, yapiskan: [] };
+    makaralarEl.querySelectorAll('.yapiskan').forEach(e => e.classList.remove('yapiskan'));
     arayuz();
     await buyukGoster('BEDAVA DÖNÜŞ BİTTİ', bedavaToplam, `${bedavaToplamAdet} dönüşte toplam kazanç`, otoAcik ? 3500 : 0);
     mesaj(`Bedava dönüş kazancı <b>${tl(bedavaToplam)}</b>`);
@@ -1085,24 +1328,64 @@ function ogMini(izgara, cizgiler = [], yan = []) { // 5x3 küçük makara + çiz
   const cz = cizgiler.map((no, i) => `<polyline points="${M.CIZGILER[no].map((r, m) => `${m * 37 + 17},${r * 37 + 17}`).join(' ')}" fill="none" stroke="${RENK[no]}" stroke-width="3" stroke-linecap="round"/>`).join('');
   return `<div class="og-mini">${hucre.join('')}<svg class="cz" viewBox="0 0 182 108">${cz}</svg></div>`;
 }
-function slotOgretici() {
-  const S = TEMA.sembol, cb = BAHISLER[D.bahisNo] / 10;
-  const dolgu = ['Y', 'C', 'P', 'U', 'A'];
-  return [
-    { baslik: 'Aynı sembolleri diz!', gorsel: ogSira(['N', 'N', 'N', 'C', 'Y'], [0, 1, 2], [3, 4]),
-      metin: `Aynı sembolden <b>3, 4 ya da 5</b> tane bir çizgide <b>en soldan başlayarak</b> yan yana gelirse kazanırsın.` },
-    { baslik: '10 çizgiden biri yeter', gorsel: ogMini([['P', 'A', 'Y'], ['C', 'A', 'U'], ['Y', 'A', 'P'], ['U', 'C', 'Y'], ['A', 'Y', 'C']], [0, 3, 4], [[0, 1], [1, 1], [2, 1]]),
-      metin: `Çizgiler düz, V ya da zikzak olabilir. <b>Ortada 3 ${S.A.ad}</b> = kazanç. Aynı anda birden çok çizgi kazanabilir, hepsi toplanır.` },
-    { baslik: `${S.W.ad} = JOKER`, gorsel: ogSira(['W', 'U', 'U', 'Y', 'C'], [0, 1, 2], [3, 4]),
-      metin: `Joker <b>eksik sembolün yerine geçer</b>: ${S.W.ad} + 2 ${S.U.ad} = 3 ${S.U.ad} sayılır.<br>🔥 <b>5 joker bir çizgide = İKRAMİYE!</b> (tamamı ${tl(BAHISLER[BAHISLER.length - 1])} bahiste)` },
-    { baslik: `3 ${S.S.ad} = BEDAVA DÖNÜŞ`, gorsel: ogMini([['S', 'Y', 'C'], ['U', 'C', 'Y'], ['P', 'S', 'A'], ['C', 'U', 'Y'], ['A', 'Y', 'S']], [], [[0, 0], [2, 1], [4, 2]]),
-      metin: `${S.S.ad} <b>nerede olursa olsun</b> sayılır, çizgi gerekmez. 3 tane gelirse <b>${M.BEDAVA_ADET} bedava dönüş</b>, kazançlar <b>×2</b>!` },
-    { baslik: 'Sürprizler', gorsel: `<div class="og-sira"><div class="h yan">${svg('W')}</div><span class="og-ok" style="font-size:40px">×3</span><div class="h">${svg('S', '', true)}</div></div>`,
-      metin: `🌧️ <b>${TEMA.yagmurAd.replace('!', '')}</b>: boş dönüşte kareler jokere döner.<br>✨ <b>Şans Çarpanı</b>: kazanç ×2, ×3, ×5 olur.<br>🪙 <b>Kumbara</b>: 50 dönüşte dolar, ödülünü seç!` },
-    { baslik: 'En değerliler', gorsel: `<div class="og-sirala">${['W', 'N', 'A', 'U', 'P', 'C', 'Y'].map(k => `<div>${svg(k, '', true)}${tl(M.SEMBOLLER[k].ode[5] * cb)}</div>`).join('')}<div style="justify-content:center;color:#fff;font-size:11px">5'li kazançlar<br>(${tl(BAHISLER[D.bahisNo])} bahiste)</div></div>`,
-      metin: `Soldan sağa: en çok ödeyenden en aza. Bahsi artırırsan kazançlar da büyür. <b>Bol şans!</b>` },
-  ];
+// her oyunun kendi kuralları: öğretici sayfaları + bilgi metni bunlardan üretilir
+function slotKurallari() {
+  const c = MK.c, S = TEMA.sembol, b = BAHISLER[D.bahisNo], enB = tl(BAHISLER[BAHISLER.length - 1]);
+  const sAd = S.S.ad, sAdK = sAd.toLocaleLowerCase('tr-TR');
+  const L = [];
+  if (c.mod === 'cizgi') {
+    L.push({ baslik: 'Aynı sembolleri diz!', gorsel: ogSira(['N', 'N', 'N', 'C', 'Y'], [0, 1, 2], [3, 4]),
+      metin: `Aynı sembolden <b>3, 4 ya da 5</b> tane bir çizgide <b>en soldan başlayarak</b> yan yana gelirse kazanırsın.` });
+    L.push({ baslik: `${c.cizgi} çizgiden biri yeter`, gorsel: ogMini([['P', 'A', 'Y'], ['C', 'A', 'U'], ['Y', 'A', 'P'], ['U', 'C', 'Y'], ['A', 'Y', 'C']], c.cizgi === 5 ? [0, 1, 2, 3, 4] : [0, 3, 4], [[0, 1], [1, 1], [2, 1]]),
+      metin: `Çizgiler düz, V ya da zikzak olabilir. <b>Ortada 3 ${S.A.ad}</b> = kazanç. Aynı anda birden çok çizgi kazanabilir, hepsi toplanır.` });
+  }
+  if (c.mod === 'yollar') {
+    L.push({ baslik: '243 yoldan kazan!', gorsel: ogMini([['Y', 'A', 'P'], ['A', 'C', 'U'], ['U', 'C', 'A'], ['P', 'Y', 'C'], ['C', 'U', 'Y']], [], [[0, 1], [1, 0], [2, 2]]),
+      metin: `Çizgi yok! Bir sembol <b>soldan yan yana makaralarda herhangi bir yerde</b> varsa kazanırsın. Aynı makarada 2 tane varsa yol sayısı ikiye katlanır.` });
+    L.push({ baslik: 'Düşen taşlar + çarpan', gorsel: `<div class="og-sira"><span class="zincir" style="font-size:26px">×1</span><span class="og-ok">→</span><span class="zincir" style="font-size:26px">×2</span><span class="og-ok">→</span><span class="zincir" style="font-size:26px">×3</span><span class="og-ok">→</span><span class="zincir" style="font-size:26px">×5</span></div>`,
+      metin: `Kazanan taşlar <b>kırılır</b>, yerine yenileri düşer, yeniden kazanabilirsin. <b>Her ardışık düşüşte çarpan büyür</b>: ×1 → ×2 → ×3 → ×5.` });
+  }
+  if (c.mod === 'kume') {
+    L.push({ baslik: 'Her yerde 8 şeker!', gorsel: `<div class="og-mini" style="grid-template-columns:repeat(6,30px)">${[...'NYCNPXZNCYNPAXNZCYNUPNZX'].map(k => `<div style="width:30px;height:30px;${k === 'N' ? 'box-shadow:0 0 0 2px #ffd34d,0 0 10px #ffd34d' : ''}">${svg(k, '', true)}</div>`).join('')}</div>`,
+      metin: `Çizgi yok! Ekranın <b>herhangi bir yerinde 8 veya daha fazla</b> aynı sembol varsa kazanırsın. 10+ ve 12+ daha çok öder.` });
+    L.push({ baslik: 'Patla, düş, yine kazan!', gorsel: ogSira(['N', '→', 'Y'], [0], []),
+      metin: `Kazanan şekerler <b>patlar</b>, üsttekiler aşağı düşer, boşluklar dolar. Yeni küme oluşursa <b>yine kazanırsın</b> — zincir sürdükçe!` });
+  }
+  if (c.mod !== 'kume' && !c.jokerYok) L.push({ baslik: `${S.W.ad} = JOKER`, gorsel: ogSira(['W', 'U', 'U', 'Y', 'C'], [0, 1, 2], [3, 4]),
+    metin: `Joker <b>eksik sembolün yerine geçer</b>: ${S.W.ad} + 2 ${S.U.ad} = 3 ${S.U.ad} sayılır.${c.mod === 'cizgi' ? `<br>🔥 <b>5 joker bir çizgide = İKRAMİYE!</b> (tamamı ${enB} bahiste)` : ''}` });
+  if (c.jokerYok) L.push({ baslik: `${S.W.ad} en değerlisi!`, gorsel: ogSira(['W', 'W', 'W', 'W', 'W'], [0, 1, 2, 3, 4]),
+    metin: `Klasik makine: joker yok, sade ve hızlı. <b>5 tane ${S.W.ad}</b> bir çizgide = bahsin <b>${Math.round(M.ODE.W[5] * c.olcek / c.cizgi)} katı</b>! ${sAd} her yerde öder.` });
+  if (c.bedava) {
+    const b2 = c.bedava, esik = b2.esik || 3;
+    const ek = b2.carpan > 1 ? `kazançlar <b>×${b2.carpan}</b>` : b2.tur === 'genisleyen' ? `başta bir <b>sembol seçilir</b>; o sembol geldiği makarayı <b>boydan boya kaplar</b> ve tüm çizgilerde öder`
+      : b2.tur === 'yapiskan' ? `gelen <b>jokerler yerine yapışır</b>, bonus bitene kadar kalır` : b2.zincir ? `çarpan <b>×3 → ×6 → ×9 → ×15</b>` : b2.bomba ? `<b>renkli bombalar</b> düşer; o dönüşün kazancını <b>×2 – ×100</b> katlar` : '';
+    L.push({ baslik: `${esik} ${sAd} = BEDAVA DÖNÜŞ`, gorsel: c.mod === 'kume' ? ogSira(['S', 'S', 'S', 'S'], [0, 1, 2, 3]) : ogMini([['S', 'Y', 'C'], ['U', 'C', 'Y'], ['P', 'S', 'A'], ['C', 'U', 'Y'], ['A', 'Y', 'S']], [], [[0, 0], [2, 1], [4, 2]]),
+      metin: `${sAd} <b>nerede olursa olsun</b> sayılır. ${esik} tane gelirse <b>${b2.adet} bedava dönüş</b>: ${ek}!` });
+  }
+  if (c.tutKazan) L.push({ baslik: `${c.tutKazan} sikke = SİKKE BONUSU`, gorsel: ogSira(['O', 'O', 'O', 'O', 'O'], [0, 1, 2, 3, 4]),
+    metin: `${c.tutKazan} veya daha fazla <b>altın sikke</b> gelirse sikkeler <b>kilitlenir</b> ve 3 tekrar hakkın olur. Her yeni sikke hakkı <b>3'e</b> döndürür. Sikkelerin değerleri toplanır; <b>15 karenin hepsi dolarsa BÜYÜK İKRAMİYE!</b>` });
+  const sur = [];
+  if (c.yagmur) sur.push(`🌧️ <b>${TEMA.yagmurAd.replace('!', '')}</b>: boş dönüşte bazı kareler jokere döner.`);
+  if (c.carpan) sur.push(`✨ <b>Şans Çarpanı</b>: kazanç ×2, ×3 ya da ×5 olur.`);
+  if (c.kumbara) sur.push(`🐷 <b>Domuz Kumbara</b>: ${M.KUMBARA_HEDEF} dönüşte dolar, kır ve ödülünü al (bahsin 2–10 katı).`);
+  if (c.kumar) sur.push(`🃏 <b>KATLA</b>: kazandıktan sonra kartın rengini bil, kazancını <b>ikiye katla</b> (5 kereye kadar). Bilemezsen o kazanç gider!`);
+  if (sur.length) L.push({ baslik: c.kumar ? 'Katla ya da topla!' : 'Sürprizler', gorsel: c.kumar ? '<div style="font-size:80px">🃏</div>' : `<div class="og-sira"><div class="h yan">${svg('W', '', c.mod === 'kume')}</div><span class="og-ok" style="font-size:40px">×3</span><div class="h">${DOMUZ}</div></div>`, metin: sur.join('<br>') });
+  L.push({ baslik: 'Ödemeler', gorsel: `<div class="tablo" style="width:100%;text-align:left">${odemeSatirlari(b).slice(0, 8).join('')}</div>`,
+    metin: `${tl(b)} bahiste. Bahsi artırırsan kazançlar da büyür. <b>Bol şans!</b>` });
+  return L;
 }
+function odemeSatirlari(b) {
+  const c = MK.c, S = TEMA.sembol, ol = c.olcek, cb = b / (c.cizgi || 10);
+  const satir = (k, ad, liste) => `${svg(k, '', true)}<div class="od"><div>${ad}</div>${liste.join(' · ')}</div>`;
+  if (c.mod === 'kume') return [...['N', 'A', 'U', 'P', 'C', 'Y', 'X', 'Z'].map(k => satir(k, S[k].ad, ['12+', '10+', '8+'].map((e, i) => `${e} <b>${tl(M.KUME_ODE[k][2 - i] * ol * b)}</b>`))),
+    satir('S', S.S.ad + ' (bonus)', ['6', '5', '4'].map((e, i) => `${e} <b>${tl([100, 5, 3][i] * b)}</b>`))];
+  if (c.mod === 'yollar') return ['N', 'A', 'U', 'P', 'C', 'Y'].map(k => satir(k, S[k].ad + ' (yol başına)', [5, 4, 3].map(n => `${n}× <b>${tl(M.ODE[k][n] * ol * b / 25)}</b>`)))
+    .concat([satir('S', S.S.ad + ' (bonus)', [5, 4, 3].map(n => `${n}× <b>${tl(M.ODE.S[n] * b)}</b>`))]);
+  const ks = c.jokerYok ? ['W', 'N', 'A', 'U', 'P', 'C', 'Y'] : ['W', 'N', 'A', 'U', 'P', 'C', 'Y'];
+  return ks.map(k => satir(k, S[k].ad + (k === 'W' && !c.jokerYok ? ' (joker)' : ''), [5, 4, 3].map(n => `${n}× <b>${tl(M.ODE[k][n] * ol * cb)}</b>`)))
+    .concat([satir('S', S.S.ad + ' (her yerde)', [5, 4, 3].map(n => `${n}× <b>${tl(M.ODE.S[n] * b * (c.bedava ? 1 : ol))}</b>`))]);
+}
+const slotOgretici = () => slotKurallari();
 
 // ---------- tema + salon ----------
 function temaUygula(id) {
@@ -1112,7 +1395,8 @@ function temaUygula(id) {
   $('logoAd').textContent = TEMA.ad.toLocaleUpperCase('tr-TR');
   document.querySelector('.logo').style.fontSize = TEMA.ad.length > 13 ? '15px' : TEMA.ad.length > 11 ? '17px' : '19px';
   $('kbIkon').innerHTML = DOMUZ;
-  goruntu.forEach((s, m) => makaraCiz(m, s));
+  MK = M.makine(id); goruntu = MK.cevir(); bonus = { ozel: null, yapiskan: [] };
+  makaraKur(); boyutla();
   document.querySelector('meta[name=theme-color]').content = TEMA.renk['--koyu'];
 }
 function lobiAc() {
@@ -1185,30 +1469,26 @@ $('oto').addEventListener('click', () => {
 $('eksi').addEventListener('click', () => { sesBaslat(); SES.tik(); D.bahisNo = Math.max(0, D.bahisNo - 1); kaydet(); arayuz(); });
 $('arti').addEventListener('click', () => { sesBaslat(); SES.tik(); D.bahisNo = Math.min(BAHISLER.length - 1, D.bahisNo + 1); kaydet(); arayuz(); });
 document.addEventListener('click', e => {
-  if (!e.target.closest('.yukle')) return;
-  sesBaslat(); SES.yukle(); titret(25);
-  D.bakiye += 1000; D.yuklenen += 1000; kaydet(); arayuz(); bakiyeYanip();
-  toast('+1.000 ₺ yüklendi');
+  if (e.target.closest('.yukle')) { sesBaslat(); SES.tik(); $('yukleKatman').classList.add('acik'); return; }
+  const y = e.target.closest('[data-yukle]');
+  if (!y) return;
+  const t = +y.dataset.yukle;
+  SES.yukle(); titret(25);
+  D.bakiye += t; D.yuklenen += t; kaydet(); arayuz(); bakiyeYanip();
+  $('yukleKatman').classList.remove('acik');
+  toast(`+${tl(t)} yüklendi`);
 });
+$('kumarKirmizi').addEventListener('click', () => kumarTahmin(true));
+$('kumarSiyah').addEventListener('click', () => kumarTahmin(false));
+$('kumarTopla').addEventListener('click', () => { SES.sikkeler(4); kumarKapat(); mesaj(`Kasaya alındı <b>${tl(kumarTutar)}</b>`); });
 $('geriBtn').addEventListener('click', () => { sesBaslat(); SES.tik(); lobiAc(); });
 $('sesBtn').addEventListener('click', () => { sesBaslat(); D.sessiz = !D.sessiz; kaydet(); sesKanallari(); arayuz(); });
 $('muzikBtn').addEventListener('click', () => { sesBaslat(); D.muzik = !D.muzik; kaydet(); sesKanallari(); arayuz(); toast(D.muzik ? 'Müzik ve salon sesi açık' : 'Müzik kapalı'); });
 $('nasilBtn').addEventListener('click', () => { $('bilgiKatman').classList.remove('acik'); ogreticiAc(TEMA.ad.toLocaleUpperCase('tr-TR'), slotOgretici()); });
 $('bilgiBtn').addEventListener('click', () => {
-  const b = BAHISLER[D.bahisNo], cb = b / M.CIZGILER.length;
-  $('tablo').innerHTML = Object.keys(M.SEMBOLLER).map(k => {
-    const s = M.SEMBOLLER[k];
-    const t = [5, 4, 3].map(n => `${n}× <b>${tl(s.ode[n] * (k === 'S' ? b : cb))}</b>`).join(' · ');
-    return `${svg(k)}<div class="od"><div>${TEMA.sembol[k].ad}</div>${t}</div>`;
-  }).join('');
-  const S = TEMA.sembol;
-  $('kurallar').innerHTML = `<b>${S.W.ad}</b> jokerdir: bonus hariç her sembolün yerine geçer.<br>
-    <b>5 joker bir çizgide: İKRAMİYE!</b> Tamamı ${tl(BAHISLER[BAHISLER.length - 1])} bahiste, düşük bahiste bahisle orantılı.<br>
-    <b>3+ ${S.S.ad}</b> (her yerde): toplam bahsin 2/10/50 katı + <b>${M.BEDAVA_ADET} bedava dönüş</b>, kazançlar <b>×2</b>.<br>
-    <b>${TEMA.yagmurAd.replace('!', '')}</b>: boş geçen bir dönüşte bazı kareler jokere döner.<br>
-    <b>Şans Çarpanı</b>: bazı kazançlar ×2, ×3 ya da ×5 olur.<br>
-    <b>Kumbara</b>: her dönüşte dolar; dolunca 3 ${S.S.ad.toLocaleLowerCase('tr-TR')}dan birini seç, bahsin 2–10 katı.<br>
-    10 çizgi soldan sağa öder; her çizgide en yüksek kazanç sayılır.`;
+  const b = BAHISLER[D.bahisNo];
+  $('tablo').innerHTML = odemeSatirlari(b).join('');
+  $('kurallar').innerHTML = slotKurallari().filter(x => x.baslik !== 'Ödemeler').map(x => `<b style="color:var(--altin)">${x.baslik}</b><br>${x.metin}`).join('<br><br>');
   $('istat').innerHTML = `<span>Toplam yüklenen</span><span>${tl(D.yuklenen)}</span><span>Toplam dönüş</span><span>${D.donus.toLocaleString('tr-TR')}</span>
     <span>En büyük kazanç</span><span>${tl(D.enBuyuk)}</span><span>Net durum</span><span>${tl(D.bakiye - D.yuklenen)}</span>`;
   $('bilgiKatman').classList.add('acik');

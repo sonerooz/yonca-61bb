@@ -73,7 +73,7 @@
   const TEMALAR = {
     // ===================== ŞANSLI YONCA =====================
     yonca: {
-      ad: 'Şanslı Yonca', slogan: 'Dört yapraklı şans', simge: '🍀',
+      ad: 'Şanslı Yonca', slogan: 'Yonca yağmuru, şans çarpanı, domuz kumbara', simge: '🍀',
       yagmurAd: 'YONCA YAĞMURU!', parcacik: 'yonca',
       etiketRenk: { W: ['#b0110f', '#ffd34d'], S: ['#1d5fd1', '#ffd34d'] },
       renk: {
@@ -142,7 +142,7 @@
 
     // ===================== ŞEKER DİYARI =====================
     seker: {
-      ad: 'Şeker Diyarı', slogan: 'Tatlı mı tatlı kazançlar', simge: '🍭',
+      ad: 'Şeker Diyarı', slogan: '6×5 · her yerde 8 şeker · patla, düş, bomba!', simge: '🍭',
       yagmurAd: 'ŞEKER YAĞMURU!', parcacik: 'seker',
       etiketRenk: { W: ['#d81b8f', '#fff'], S: ['#7b2ff7', '#fff'] },
       renk: {
@@ -181,6 +181,11 @@
         C: { ad: 'Elma Jelibon', c: `<path d="M28 62 C15 46 27 24 47 30 C57 33 62 25 73 27 C88 31 88 57 73 67 C59 77 39 76 28 62Z" fill="url(#gYesilSeker)" stroke="#2f7a1c" stroke-width="2.5"/>
           <ellipse cx="40" cy="40" rx="9" ry="4.5" fill="#ffffffaa" transform="rotate(-20 40 40)"/>
           ${[[52, 50], [62, 58], [44, 60], [68, 42], [36, 52]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="#ffffffcc"/>`).join('')}` },
+        X: { ad: 'Muz', c: `<path d="M22 30 C20 60 42 84 78 80 C84 79 86 74 80 72 C52 72 34 56 32 30 C32 24 24 22 22 30Z" fill="url(#gLimon)" stroke="#a88400" stroke-width="2.5"/>
+          <path d="M22 30 L18 22 L26 20 L30 28Z" fill="#6b4426"/><path d="M30 40 C34 56 48 68 70 74" stroke="#fff9" stroke-width="3" fill="none" stroke-linecap="round"/>` },
+        Z: { ad: 'Mavi Sakız', c: `<circle cx="50" cy="52" r="34" fill="url(#gMavi)" stroke="#0a5fb4" stroke-width="2.5"/>
+          <ellipse cx="38" cy="38" rx="11" ry="7" fill="#ffffffaa" transform="rotate(-30 38 38)"/>
+          ${[[58, 62], [44, 66], [64, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#ffffffaa"/>`).join('')}` },
         Y: { ad: 'Üzüm Damla', c: `<path d="M22 78 C22 42 38 26 50 26 C62 26 78 42 78 78 Q50 86 22 78 Z" fill="url(#gMor)" stroke="#4a1590" stroke-width="2.5"/>
           ${[[38, 44], [52, 38], [62, 50], [44, 58], [58, 66], [34, 66], [50, 50], [68, 66]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2" fill="#ffffffcc"/>`).join('')}
           <path d="M34 40 Q38 32 46 30" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/>` },
@@ -195,7 +200,7 @@
 
     // ===================== BÜYÜCÜ KULESİ =====================
     buyucu: {
-      ad: 'Büyücü Kulesi', slogan: 'Gizemli büyüler, sihirli ödüller', simge: '🔮',
+      ad: 'Büyücü Kulesi', slogan: 'Bedava dönüşte makarayı kaplayan sembol', simge: '🔮',
       yagmurAd: 'BÜYÜ FIRTINASI!', parcacik: 'yildiz',
       etiketRenk: { W: ['#5b21b6', '#ffd34d'], S: ['#0e7490', '#ffd34d'] },
       renk: {
@@ -255,9 +260,9 @@
     },
     // ===================== ATEŞLİ 7'LER (klasik meyve makinesi) =====================
     ates: {
-      ad: "Ateşli 7'ler", slogan: 'Klasik meyve makinesi, parlayan 7', simge: '🔥',
+      ad: "Ateşli 7'ler", slogan: 'Klasik 5 çizgi · kazancını KATLA', simge: '🔥',
       yagmurAd: 'ATEŞ YAĞMURU!', parcacik: 'yildiz',
-      etiketRenk: { W: ['#c40000', '#ffd34d'], S: ['#e08a00', '#fff'] },
+      etiketRenk: { W: null, S: ['#e08a00', '#fff'] },
       renk: {
         '--arka': 'radial-gradient(120% 80% at 50% 15%, #a3150a 0%, #4a0703 45%, #140100 100%)',
         '--koyu': '#1a0200', '--soluk': '#ffb59e', '--vurgu': '#ff7a00',
@@ -310,7 +315,7 @@
 
     // ===================== KORSAN HAZİNESİ =====================
     korsan: {
-      ad: 'Korsan Hazinesi', slogan: 'Yedi denizin altını seni bekliyor', simge: '🏴‍☠️',
+      ad: 'Korsan Hazinesi', slogan: 'Bedava dönüşte yapışkan jokerler', simge: '🏴‍☠️',
       yagmurAd: 'HAZİNE YAĞMURU!', parcacik: 'sikke',
       etiketRenk: { W: ['#111', '#ffd34d'], S: ['#8a4b1c', '#ffd34d'] },
       renk: {
@@ -382,7 +387,7 @@
     },
     // ===================== ŞANSLI KUZU =====================
     kuzu: {
-      ad: 'Şanslı Kuzu', slogan: 'Çiftlikte şans bereketi', simge: '🐑',
+      ad: 'Şanslı Kuzu', slogan: 'Altın sikkeleri kilitle · sikke bonusu', simge: '🐑',
       yagmurAd: 'BEREKET YAĞMURU!', parcacik: 'yonca',
       etiketRenk: { W: ['#2e9d48', '#ffd34d'], S: ['#e08a00', '#fff'] },
       renk: {
@@ -446,7 +451,7 @@
 
     // ===================== MAYA HAZİNELERİ =====================
     maya: {
-      ad: 'Maya Hazineleri', slogan: 'Kayıp tapınağın altın maskesi', simge: '🗿',
+      ad: 'Maya Hazineleri', slogan: '243 yol · düşen taşlar · ×15 çarpan', simge: '🗿',
       yagmurAd: 'TAPINAK BÜYÜSÜ!', parcacik: 'yildiz',
       etiketRenk: { W: ['#0b5e40', '#ffd34d'], S: ['#8a5300', '#fff'] },
       renk: {

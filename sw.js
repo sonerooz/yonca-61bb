@@ -1,5 +1,5 @@
 // çevrimdışı çalışma: önce önbellek, arkada güncelle
-const SURUM = 'yonca-v5';
+const SURUM = 'yonca-v6';
 const DOSYALAR = ['./', 'index.html', 'motor.js', 'temalar.js', 'yaris.js', 'rulet.js', 'tombala.js', 'manifest.json', 'ikon-180.png', 'ikon-192.png', 'ikon-512.png',
   ...['lobi', 'yonca', 'seker', 'buyucu', 'ates', 'korsan', 'kuzu', 'maya', 'yaris', 'rulet', 'tombala'].map(m => `muzik/${m}.mp3`)];
 self.addEventListener('install', e => { e.waitUntil(caches.open(SURUM).then(c => c.addAll(DOSYALAR))); self.skipWaiting(); });
