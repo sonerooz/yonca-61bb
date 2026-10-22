@@ -237,6 +237,26 @@ body.coskulu .ampul.b { animation-delay: .12s; } body.coskulu .ampul.c { animati
 .kb-secim .deger { font-size: 22px; font-weight: 900; min-height: 30px; color: var(--altin); }
 .kb-secim .acildi svg { animation: none; transform: scale(1.12); filter: drop-shadow(0 0 22px #ffd34d); }
 .kb-secim .soldu { opacity: .45; } .kb-secim .soldu .deger { color: #ddd; font-size: 17px; }
+/* karakter sahnesi */
+#sahne { position: relative; height: 92px; margin-top: auto; z-index: 1; pointer-events: none; }
+#sahne + .cerceve { margin-top: 0; z-index: 2; }
+#karakter { position: absolute; right: -4px; bottom: -40px; height: 142px; transform-origin: 50% 100%; animation: nefes 3.2s ease-in-out infinite; }
+#karakter img { height: 100%; display: block; filter: drop-shadow(0 6px 10px #000a); }
+#karakter.aksiyon { animation: aksiyonA .5s ease-out; }
+#karakter.sevinc { animation: sevincA .45s ease-in-out 4 alternate; }
+@keyframes nefes { 50% { transform: scale(1.025, .985) translateY(1px); } }
+@keyframes aksiyonA { 0% { transform: scale(.95) rotate(-3deg); } 40% { transform: scale(1.08) rotate(2deg); } 100% { transform: none; } }
+@keyframes sevincA { to { transform: translateY(-12px) rotate(-2deg) scale(1.04); } }
+#balon { position: absolute; right: 150px; bottom: 34px; max-width: 58%; padding: 8px 12px; border-radius: 16px 16px 4px 16px; background: #fffef5; color: #231600;
+  font-weight: 900; font-size: 14px; line-height: 1.25; box-shadow: 0 6px 16px #0008; opacity: 0; transform: scale(.6); transform-origin: 100% 100%; transition: opacity .2s, transform .25s cubic-bezier(.3,1.6,.5,1); }
+#balon.acik { opacity: 1; transform: none; }
+.mermi { position: fixed; left: 0; top: 0; z-index: 33; pointer-events: none; font-size: 30px; line-height: 1; will-change: transform; filter: drop-shadow(0 0 8px #fff8); }
+.mermi.gulle { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #888, #111 70%); box-shadow: 0 0 10px #f80; }
+.mermi.isin { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle, #fff, #c08bff 40%, #7c3aed00 70%); }
+.klon { position: fixed; z-index: 33; pointer-events: none; will-change: transform; }
+.klon svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px #ffd34d); }
+.hucre.yapiskan svg { animation: bayrak 1.2s ease-in-out infinite; }
+@keyframes bayrak { 50% { transform: skewY(-4deg) scale(1.04); } }
 /* yeni slot mekanikleri */
 .hucre.patla svg { animation: patlaS .33s ease-in forwards; }
 @keyframes patlaS { 40% { transform: scale(1.35); filter: brightness(2) drop-shadow(0 0 12px #fff); } 100% { transform: scale(0) rotate(40deg); opacity: 0; } }
@@ -358,6 +378,7 @@ body.deprem #uygulama, body.deprem #digerOyun .kabuk { animation: deprem .09s li
     <button class="yukle">+ PARA YÜKLE</button>
   </div>
 
+  <div id="sahne"><div id="balon"></div><div id="karakter"><img id="karImg" alt=""></div></div>
   <div class="cerceve" id="cerceve">
     <div id="patlama"></div>
     <div id="tkUst">SİKKE BONUSU · HAK <i id="tkHak">3</i></div>
@@ -508,7 +529,7 @@ let bonus = { ozel: null, yapiskan: [] }; // bedava dönüş durumu (büyücü �
 
 // sembol çizimi (etiketsiz: büyük gösterimler için JOKER/BONUS yazısı olmadan)
 const svg = (k, ek = '', etiketsiz = false, tema = TEMA) => {
-  if (k[0] === 'B') return bombaSvg(+k.slice(1), ek);
+  if (k[0] === 'B') return tema.id === 'olimpos' ? kureSvg(+k.slice(1), ek) : bombaSvg(+k.slice(1), ek);
   const et = !etiketsiz && TEMA_ETIKET[k] && tema.etiketRenk[k] ? TEMA_ETIKET[k](...tema.etiketRenk[k]) : '';
   if (tema.resimli && (tema.sembol[k] || k === 'O')) // Gemini sembolü (SVG içinde: tüm efekt/animasyon kuralları aynen çalışır)
     return `<svg viewBox="0 0 100 100" ${ek}><image href="sanat/${tema.id}/${k}.webp" x="1" y="1" width="98" height="98"/>${et}</svg>`;
@@ -516,6 +537,9 @@ const svg = (k, ek = '', etiketsiz = false, tema = TEMA) => {
   const sb = tema.sembol[k] || tema.sembol.Y;
   return `<svg viewBox="0 0 100 100" ${ek}>${sb.c}${et}</svg>`;
 };
+// olimpos çarpan küresi: şimşek küresi resmi + sayı
+const kureSvg = (x, ek = '') => `<svg viewBox="0 0 100 100" ${ek}><image href="sanat/olimpos/W.webp" x="2" y="2" width="96" height="96"/>
+  <text x="50" y="${x >= 100 ? 62 : 64}" text-anchor="middle" font-size="${x >= 100 ? 26 : 32}" font-weight="900" font-family="Arial Black, Arial" fill="#fff" stroke="#0d2a7a" stroke-width="4" paint-order="stroke">×${x}</text></svg>`;
 // şeker bombası (bedava dönüşte çarpan) ve kuzu sikkesi
 const bombaSvg = (x, ek = '') => `<svg viewBox="0 0 100 100" ${ek}><circle cx="50" cy="50" r="46" fill="url(#gPariltiPembe)"/>
   <path d="M60 22 Q70 8 82 12" stroke="#6b4426" stroke-width="4" fill="none"/><circle cx="84" cy="11" r="5" fill="#ffd23f"/>
@@ -736,6 +760,9 @@ function efektKare(t) {
     } else if (p.tur === 'yildiz') {
       cx.rotate(p.a); cx.fillStyle = p.renk === '#ff6b6b' ? '#fff' : '#ffe680'; cx.shadowColor = '#b48cff'; cx.shadowBlur = 12;
       cx.beginPath(); for (let k = 0; k < 10; k++) { const q = k % 2 ? p.r * .42 : p.r, an = k * Math.PI / 5 - Math.PI / 2; cx.lineTo(Math.cos(an) * q, Math.sin(an) * q); } cx.fill();
+    } else if (p.tur === 'tas') {
+      cx.rotate(p.a); cx.fillStyle = p.renk === '#ffd23f' ? '#e9c46a' : '#8a7650';
+      cx.beginPath(); cx.moveTo(-p.r, -p.r * .4); cx.lineTo(p.r * .2, -p.r); cx.lineTo(p.r, p.r * .3); cx.lineTo(-p.r * .3, p.r); cx.closePath(); cx.fill();
     } else { // kıvılcım
       cx.globalCompositeOperation = 'lighter'; cx.fillStyle = p.renk; cx.beginPath(); cx.arc(0, 0, p.r, 0, Math.PI * 2); cx.fill();
     }
@@ -775,9 +802,9 @@ function buyuYap() {
   gurultu(1.2, { ses: .05, frek: 6000, tip: 'highpass' });
 }
 // belirli noktadan sikke patlaması
-function sikkePatlat(x, y, n = 40) {
+function sikkePatlat(x, y, n = 40, tur = 'sikke') {
   for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, h = (4 + Math.random() * 9) * DPR;
-    parcalar.push(parca('sikke', x * DPR, y * DPR, Math.cos(a) * h, Math.sin(a) * h - 8 * DPR)); }
+    parcalar.push(parca(tur, x * DPR, y * DPR, Math.cos(a) * h, Math.sin(a) * h - 8 * DPR, tur === 'sikke' ? {} : { r: (4 + Math.random() * 6) * DPR })); }
   efektCalis();
 }
 function flas() { const f = $('flas'); f.classList.remove('yak'); void f.offsetWidth; f.classList.add('yak'); }
@@ -807,7 +834,7 @@ let H = 80, CW = 80;
 function boyutla() {
   const w = makaralarEl.clientWidth - 8 - 4 * (MK.sutun - 1);
   CW = w / MK.sutun;
-  const bos = innerHeight - 545; // diğer öğelerin kapladığı yaklaşık yükseklik
+  const bos = innerHeight - 545 - 92; // diğer öğeler + karakter sahnesi
   H = MK.satir === 3 ? Math.floor(Math.max(CW, Math.min(bos / 3, CW * 1.3))) : Math.floor(Math.max(40, Math.min(CW, bos / MK.satir)));
   makaralarEl.style.setProperty('--h', H + 'px');
   ampulKur($('cerceve'), 20);
@@ -903,7 +930,7 @@ function kazancGoster(sonuc) {
 // ---------- arayüz ----------
 const bedavaAciklama = () => { const b = MK.c.bedava || {};
   return b.carpan > 1 ? '×' + b.carpan : b.tur === 'genisleyen' && bonus.ozel ? `${TEMA.sembol[bonus.ozel].ad} genişler` : b.tur === 'yapiskan' ? 'yapışkan jokerler'
-    : b.zincir ? 'çarpan ×3 → ×15' : b.bomba ? 'bombalar çarpar' : ''; };
+    : b.zincir ? 'çarpan ×3 → ×15' : b.birikim ? `çarpanlar birikir${bonus.birikim ? ' · ×' + bonus.birikim : ''}` : b.bomba ? 'bombalar çarpar' : ''; };
 const sayacYazi = () => bedavaToplamAdet && (bedavaKalan > 0 || document.body.classList.contains('bedava-mod'))
   ? `<div class="bedava-sayac">BEDAVA DÖNÜŞ ${bedavaToplamAdet - bedavaKalan}/${bedavaToplamAdet} · ${bedavaAciklama()}</div>` : '';
 function arayuz() {
@@ -1038,6 +1065,104 @@ function kumbaraAc(bahis) {
   });
 }
 
+// ---------- karakter: bekle / aksiyon / sevinç pozları, konuşma balonu, fırlatma ----------
+const SOZ = {
+  olimpos: { aksiyon: ['Al bakalım!', 'Şimşek geliyor!', 'Dede kızdı!'], sevinc: ['Muhteşem evlat!', 'Olimpos seninle!', 'İşte budur!'], teselli: ['Sabret evlat…', 'Dede birazdan coşacak', 'Bir dahakine şimşek senin'] },
+  yonca: { aksiyon: ['Şans senin!', 'Tut bakalım!'], sevinc: ['Altın kazanım dolsun!', 'Yaşasın!', 'İşte şans!'], teselli: ['Yonca dönecek…', 'Şansın yakın!'] },
+  korsan: { aksiyon: ['Ateş!', 'Toplar hazır!', 'Hücum!'], sevinc: ['Hazine bizim!', 'Yo-ho-ho!', 'Altınlar!'], teselli: ['Rüzgar dönecek…', 'Sabır denizci!'] },
+  seker: { aksiyon: ['Şeker yağmuru!', 'Pıt pıt!'], sevinc: ['Tatlı mı tatlı!', 'Bayıldım!', 'Şahane!'], teselli: ['Bir şeker daha?', 'Az kaldı tatlım!'] },
+  buyucu: { aksiyon: ['Abrakadabra!', 'Büyü zamanı!'], sevinc: ['Büyü tuttu!', 'Harika!'], teselli: ['Kitap yakında açılır…', 'Sabır, çırak!'] },
+  maya: { aksiyon: ['Tanrılar uyandı!', 'Davullar çalsın!'], sevinc: ['Altın tapınak!', 'Bereket!'], teselli: ['Tapınak sabır ister…', 'Taşlar dönecek'] },
+  kuzu: { aksiyon: ['Al evladım!', 'Bereketli olsun!'], sevinc: ['Maşallah!', 'Kuzum kazandı!'], teselli: ['Hasat yakında…', 'Sabreden derviş…'] },
+  ates: { aksiyon: ['Yanıyor!', 'Sıcak sıcak!'], sevinc: ['Alev alev!', 'Ateşli kazanç!'], teselli: ['Kor hâlâ sıcak…', 'Alev birazdan büyür'] },
+};
+const MERMI = { olimpos: 'simsek', korsan: 'gulle', yonca: '🍀', seker: '🍬', buyucu: 'isin', maya: '✨', kuzu: '🪙', ates: '🔥' };
+const Karakter = {
+  z: null, bz: null,
+  yukle() { ['bekle', 'aksiyon', 'sevinc'].forEach(p => { new Image().src = `sanat/${TEMA.id}/k_${p}.webp`; }); this.poz('bekle'); $('balon').classList.remove('acik'); },
+  poz(p, ms = 0) {
+    const k = $('karakter');
+    $('karImg').src = `sanat/${TEMA.id}/k_${p}.webp`;
+    k.classList.remove('aksiyon', 'sevinc'); void k.offsetWidth;
+    if (p !== 'bekle') k.classList.add(p);
+    clearTimeout(this.z);
+    if (ms) this.z = setTimeout(() => this.poz('bekle'), ms);
+  },
+  soyle(metin, ms = 1900) {
+    const b = $('balon'); b.textContent = metin; b.classList.add('acik');
+    clearTimeout(this.bz); this.bz = setTimeout(() => b.classList.remove('acik'), ms);
+  },
+  sozSoyle(tur, ms) { const l = (SOZ[TEMA.id] || {})[tur]; if (l) this.soyle(rasgele(l), ms); },
+  el() { const r = $('karImg').getBoundingClientRect(); return [r.left + r.width * .3, r.top + r.height * .25]; },
+  // hedef hücrelere fırlatma (korsan gülle, zeus şimşek, büyücü ışın, diğerleri emoji)
+  async firlat(hucreler, { soz = true } = {}) {
+    if (!hucreler.length) return;
+    this.poz('aksiyon', 1100); if (soz) this.sozSoyle('aksiyon');
+    const tur = MERMI[TEMA.id] || '✨';
+    await bekle(220);
+    const [x0, y0] = this.el();
+    for (const [m, r] of hucreler) {
+      const h = seritEl[m]?.children[r]; if (!h) continue;
+      const hr = h.getBoundingClientRect(), x1 = hr.left + hr.width / 2, y1 = hr.top + hr.height / 2;
+      if (tur === 'simsek') { simsekAt(x0, y0, x1, y1); }
+      else {
+        const e = document.createElement('div');
+        e.className = 'mermi ' + (tur === 'gulle' || tur === 'isin' ? tur : '');
+        if (tur.length <= 2) e.textContent = tur;
+        document.body.appendChild(e);
+        const tepe = Math.min(y0, y1) - 60;
+        await e.animate([
+          { transform: `translate(${x0 - 13}px, ${y0 - 13}px) scale(.6)` },
+          { transform: `translate(${(x0 + x1) / 2 - 13}px, ${tepe}px) scale(1.2) rotate(180deg)`, offset: .5 },
+          { transform: `translate(${x1 - 13}px, ${y1 - 13}px) scale(1) rotate(360deg)` }], { duration: 380, easing: 'ease-in' }).finished;
+        e.remove();
+        if (tur === 'gulle') { gurultu(.3, { ses: .35, frek: 150, tip: 'lowpass' }); havaiFisek(x1 * DPR, y1 * DPR); }
+      }
+      if (tur === 'gulle') gurultu(.15, { ses: .3, frek: 400, gec: 0 });
+      sikkePatlat(x1, y1, 8); titret(15);
+      await bekle(90);
+    }
+  },
+};
+// tek şimşek: elden hedefe zikzak, mavi parlama
+function simsekAt(x0, y0, x1, y1) {
+  let d = `M${x0} ${y0}`; const n = 7;
+  for (let i = 1; i < n; i++) { const u = i / n; d += ` L${(x0 + (x1 - x0) * u + (Math.random() - .5) * 40).toFixed(0)} ${(y0 + (y1 - y0) * u + (Math.random() - .5) * 30).toFixed(0)}`; }
+  d += ` L${x1} ${y1}`;
+  $('gok').innerHTML = `<svg viewBox="0 0 ${innerWidth} ${innerHeight}"><g class="simsek"><path d="${d}" stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round"/><path d="${d}" stroke="#7fb2ff" stroke-width="12" fill="none" opacity=".45"/></g></svg>`;
+  gurultu(.06, { ses: .4, frek: 3500, tip: 'highpass' }); gurultu(.5, { ses: .25, frek: 120, tip: 'lowpass', gec: .05 });
+  const f = $('flas'); f.style.background = '#cfe3ff'; flas(); setTimeout(() => { f.style.background = '#fff'; }, 300);
+  setTimeout(() => { $('gok').innerHTML = ''; }, 650);
+}
+// kazanan semboller ortada birleşir → dev sembol patlar (yonca)
+async function birlestir(hucreler) {
+  const kr = makaralarEl.getBoundingClientRect(), cx = kr.left + kr.width / 2, cy = kr.top + kr.height / 2;
+  const klonlar = hucreler.map(([m, r]) => {
+    const h = seritEl[m]?.children[r]; if (!h) return null;
+    const hr = h.getBoundingClientRect(), e = document.createElement('div');
+    e.className = 'klon'; e.style.width = hr.width + 'px'; e.style.height = hr.height + 'px';
+    e.innerHTML = h.innerHTML; e.style.transform = `translate(${hr.left}px, ${hr.top}px)`;
+    document.body.appendChild(e); h.style.visibility = 'hidden';
+    return { e, hr, h };
+  }).filter(Boolean);
+  SES.yagmur();
+  await Promise.all(klonlar.map(({ e, hr }, i) => e.animate([
+    { transform: `translate(${hr.left}px, ${hr.top}px) scale(1)` },
+    { transform: `translate(${cx - hr.width / 2}px, ${cy - hr.height / 2}px) scale(.6) rotate(${i % 2 ? 200 : -200}deg)` }],
+    { duration: 520, delay: i * 40, easing: 'cubic-bezier(.5,0,.7,1)', fill: 'forwards' }).finished));
+  klonlar.forEach(({ e }) => e.remove());
+  const dev = document.createElement('div'); dev.className = 'klon';
+  const b = kr.height * .8; dev.style.width = dev.style.height = b + 'px';
+  dev.style.transform = `translate(${cx - b / 2}px, ${cy - b / 2}px)`; dev.innerHTML = svg(hucreler.length >= 4 ? 'W' : goruntu[hucreler[0][0]][hucreler[0][1]], '', true);
+  document.body.appendChild(dev);
+  ton(523, .2, { tip: 'triangle', ses: .15 }); ton(1047, .4, { tip: 'triangle', ses: .15, gec: .1 });
+  await dev.animate([{ transform: `translate(${cx - b / 2}px, ${cy - b / 2}px) scale(.2) rotate(-90deg)`, opacity: 0 },
+    { transform: `translate(${cx - b / 2}px, ${cy - b / 2}px) scale(1.15) rotate(10deg)`, opacity: 1, offset: .6 },
+    { transform: `translate(${cx - b / 2}px, ${cy - b / 2}px) scale(1.6)`, opacity: 0 }], { duration: 900, easing: 'ease-out' }).finished;
+  dev.remove(); sikkePatlat(cx, cy, 40); yagmurBaslat(700, TEMA.parcacik, 2); flas();
+  klonlar.forEach(({ h }) => { h.style.visibility = ''; });
+}
+
 // ---------- kuzu: tut & kazan ----------
 async function tutKazanOyna(tk, bahis) {
   patlama('SİKKE BONUSU!', 'yesil'); SES.kazan3(); buyuYap(); titret([40, 40, 80]);
@@ -1138,7 +1263,7 @@ async function cevir() {
   arayuz(); kaydet();
   SES.cevir(); titret(15);
 
-  const o = MK.oyna(bahis, { bedavada, ozel: bonus.ozel, yapiskan: bonus.yapiskan });
+  const o = MK.oyna(bahis, { bedavada, ozel: bonus.ozel, yapiskan: bonus.yapiskan, birikim: bonus.birikim });
   // bekletme: bonusa bir sembol kalmışsa kalan makaralar uzun döner (gerilim)
   const esikS = (MK.c.bedava?.esik || 3) - 1;
   const sSay = o.ilk.map(k => k.filter(x => x === 'S').length);
@@ -1166,8 +1291,8 @@ async function cevir() {
   const kazYaz = (ek = '') => mesaj(`KAZANÇ <b>${tl(ekran)}</b>${ek}${sayacYazi()}`);
   for (const a of o.asamalar) {
     if (a.tip === 'yagmur') {
-      patlama(TEMA.yagmurAd, 'yesil'); buyuYap(); yagmurBaslat(1400, TEMA.parcacik, 1); SES.yagmur(); titret(30); coskulu(2000);
-      await bekle(750);
+      patlama(TEMA.yagmurAd, 'yesil'); yagmurBaslat(1400, TEMA.parcacik, 1); SES.yagmur(); titret(30); coskulu(2000);
+      await Karakter.firlat(a.hucreler);
       for (const [m, r] of a.hucreler) {
         const h = seritEl[m].children[r];
         h.dataset.k = 'W'; h.innerHTML = svg('W'); h.classList.add('donustu');
@@ -1178,6 +1303,10 @@ async function cevir() {
     } else if (a.tip === 'cizgi') {
       ekran += a.sonuc.kazanc; kazancGoster(a.sonuc); kazYaz();
       await bekle(350);
+      if (TEMA.id === 'yonca' && a.sonuc.kazanc >= bahis * 2) { // yoncalar birleşir
+        const tek = [...new Set(a.sonuc.hucreler.map(h => h.join(',')))].map(x => x.split(',').map(Number));
+        await birlestir(tek); kazancGoster(a.sonuc);
+      }
     } else if (a.tip === 'patlat') {
       makaralarEl.classList.add('soluk'); hucreIsaretle(a.sonuc.hucreler);
       ekran += a.sonuc.kazanc;
@@ -1188,7 +1317,9 @@ async function cevir() {
       a.sonuc.hucreler.forEach(([m, r]) => seritEl[m].children[r]?.classList.add('patla'));
       SES.pop(); gurultu(.2, { ses: .15, frek: 3000 });
       const k0 = makaralarEl.getBoundingClientRect();
-      a.sonuc.hucreler.slice(0, 5).forEach(([m, r]) => sikkePatlat(k0.left + 4 + m * (CW + 4) + CW / 2, k0.top + 4 + r * H + H / 2, 6));
+      const pt = TEMA.id === 'maya' ? 'tas' : MK.c.mod === 'kume' ? 'seker' : 'sikke';
+      a.sonuc.hucreler.slice(0, 10).forEach(([m, r]) => sikkePatlat(k0.left + 4 + m * (CW + 4) + CW / 2, k0.top + 4 + r * H + H / 2, pt === 'sikke' ? 6 : 9, pt));
+      if (TEMA.id === 'maya' && zincirNo >= 1) { Karakter.poz('aksiyon', 800); Karakter.sozSoyle('aksiyon', 1200); [0, .15, .3].forEach(g => ton(90, .18, { tip: 'sine', ses: .35, kay: 50, gec: g })); }
       await bekle(340);
       makaralarEl.classList.remove('soluk'); makaralarEl.querySelectorAll('.kazanan').forEach(e => e.classList.remove('kazanan'));
       await dusur(a.izgaraSonra, a.sonuc.hucreler);
@@ -1196,14 +1327,15 @@ async function cevir() {
       zincirNo++;
       await bekle(150);
     } else if (a.tip === 'genislet') {
-      patlama('GENİŞLEYEN SEMBOL!', 'mor'); SES.carpan(); buyuYap(); coskulu(2500);
-      await bekle(500);
+      patlama('GENİŞLEYEN SEMBOL!', 'mor'); SES.carpan(); coskulu(2500);
+      await Karakter.firlat(a.makaralar.map(m => [m, 1]));
       for (const m of a.makaralar) { makaraCiz(m, Array(MK.satir).fill(a.sembol)); makaraEl[m].classList.add('genis'); goruntu[m] = Array(MK.satir).fill(a.sembol); SES.pop(); titret(20); await bekle(300); }
       ekran += a.kazanc; kazYaz();
       if (a.kazanc >= bahis * 5) { flas(); deprem(600); }
       await bekle(900);
     } else if (a.tip === 'bomba') {
-      for (const [m, r] of a.bombalar) { seritEl[m].children[r]?.classList.add('kazanan'); SES.pop(); await bekle(260); }
+      if (a.bombalar.length) await Karakter.firlat(a.bombalar.map(([m, r]) => [m, r]));
+      for (const [m, r] of a.bombalar) { seritEl[m].children[r]?.classList.add('kazanan'); SES.pop(); await bekle(220); }
       patlama(`×${a.carp}`, 'mor'); SES.carpan(); titret([40, 30, 80]);
       if (a.carp >= 10) gokYarilsin(); else flas();
       deprem(600);
@@ -1221,13 +1353,14 @@ async function cevir() {
       await bekle(700);
     }
   }
-  if (o.tutKazan) await tutKazanOyna(o.tutKazan, bahis);
+  if (o.tutKazan) { Karakter.poz('aksiyon', 1500); Karakter.sozSoyle('aksiyon'); await tutKazanOyna(o.tutKazan, bahis); }
 
   const k = o.kazanc;
   if (k > 0) {
     D.bakiye += k; D.toplamKazanc += k; D.enBuyuk = Math.max(D.enBuyuk, k);
     if (bedavada) bedavaToplam += k;
     const kat = k / bahis;
+    if (kat >= 3) { Karakter.poz('sevinc', kat >= 15 ? 4500 : 2200); Karakter.sozSoyle('sevinc', 2200); }
     if (kat >= 15 && !o.tutKazan?.tam) {
       SES.buyuk(); titret([60, 40, 60, 40, 120]);
       mesaj(`KAZANÇ <b>${tl(k)}</b>${sayacYazi()}`, true);
@@ -1248,6 +1381,7 @@ async function cevir() {
       $('mesaj').appendChild(b);
     }, 750);
   } else if (!bedavada) {
+    if (Math.random() < .12) Karakter.sozSoyle('teselli', 1700);
     const kp = Math.random() < .7 ? kilPayi(goruntu) : -1;
     if (kp >= 0) kilPayiGoster(kp);
     const sAd = TEMA.sembol.S.ad.toLocaleLowerCase('tr-TR');
@@ -1273,6 +1407,7 @@ async function cevir() {
     if (D.kumbara >= M.KUMBARA_HEDEF) { D.kumbara = 0; kaydet(); await bekle(k > 0 ? 900 : 300); await kumbaraAc(bahis); }
   }
   if (bedavada && o.yeniYapiskan) bonus.yapiskan = o.yeniYapiskan;
+  if (bedavada && o.yeniBirikim) { bonus.birikim = o.yeniBirikim; mesaj(`${$('mesaj').innerHTML}<span class="zincir">TOPLAM ×${bonus.birikim}</span>`); }
   donuyor = false;
   kaydet(); arayuz();
 
@@ -1284,6 +1419,7 @@ async function cevir() {
     document.body.classList.add('bedava-mod');
     Muzik.hiz = 1.15;
     gokYarilsin(); setTimeout(buyuYap, 300); setTimeout(() => deprem(900), 400);
+    Karakter.poz('sevinc', 3000); Karakter.soyle('BEDAVA DÖNÜŞ!', 2500);
     await bekle(900);
     await buyukGoster(ilkTetik ? `${o.bedava} BEDAVA DÖNÜŞ!` : `+${o.bedava} BEDAVA DÖNÜŞ!`, null, `${bedavaAciklama() || 'Bol şans'} · başlamak için dokun`, otoAcik ? 3000 : 0);
     if (ilkTetik && MK.c.bedava?.tur === 'genisleyen') bonus.ozel = await ozelSec();
@@ -1353,10 +1489,10 @@ function slotKurallari() {
       metin: `Kazanan taşlar <b>kırılır</b>, yerine yenileri düşer, yeniden kazanabilirsin. <b>Her ardışık düşüşte çarpan büyür</b>: ×1 → ×2 → ×3 → ×5.` });
   }
   if (c.mod === 'kume') {
-    L.push({ baslik: 'Her yerde 8 şeker!', gorsel: `<div class="og-mini" style="grid-template-columns:repeat(6,30px)">${[...'NYCNPXZNCYNPAXNZCYNUPNZX'].map(k => `<div style="width:30px;height:30px;${k === 'N' ? 'box-shadow:0 0 0 2px #ffd34d,0 0 10px #ffd34d' : ''}">${svg(k, '', true)}</div>`).join('')}</div>`,
+    L.push({ baslik: TEMA.id === 'olimpos' ? 'Her yerde 8 aynı taş!' : 'Her yerde 8 şeker!', gorsel: `<div class="og-mini" style="grid-template-columns:repeat(6,30px)">${[...'NYCNPXZNCYNPAXNZCYNUPNZX'].map(k => `<div style="width:30px;height:30px;${k === 'N' ? 'box-shadow:0 0 0 2px #ffd34d,0 0 10px #ffd34d' : ''}">${svg(k, '', true)}</div>`).join('')}</div>`,
       metin: `Çizgi yok! Ekranın <b>herhangi bir yerinde 8 veya daha fazla</b> aynı sembol varsa kazanırsın. 10+ ve 12+ daha çok öder.` });
     L.push({ baslik: 'Patla, düş, yine kazan!', gorsel: ogSira(['N', '→', 'Y'], [0], []),
-      metin: `Kazanan şekerler <b>patlar</b>, üsttekiler aşağı düşer, boşluklar dolar. Yeni küme oluşursa <b>yine kazanırsın</b> — zincir sürdükçe!` });
+      metin: `Kazanan ${TEMA.id === 'olimpos' ? 'taşlar' : 'şekerler'} <b>patlar</b>, üsttekiler aşağı düşer, boşluklar dolar. Yeni küme oluşursa <b>yine kazanırsın</b> — zincir sürdükçe!` });
   }
   if (c.mod !== 'kume' && !c.jokerYok) L.push({ baslik: `${S.W.ad} = JOKER`, gorsel: ogSira(['W', 'U', 'U', 'Y', 'C'], [0, 1, 2], [3, 4]),
     metin: `Joker <b>eksik sembolün yerine geçer</b>: ${S.W.ad} + 2 ${S.U.ad} = 3 ${S.U.ad} sayılır.${c.mod === 'cizgi' ? `<br>🔥 <b>5 joker bir çizgide = İKRAMİYE!</b> (tamamı ${enB} bahiste)` : ''}` });
@@ -1365,10 +1501,13 @@ function slotKurallari() {
   if (c.bedava) {
     const b2 = c.bedava, esik = b2.esik || 3;
     const ek = b2.carpan > 1 ? `kazançlar <b>×${b2.carpan}</b>` : b2.tur === 'genisleyen' ? `başta bir <b>sembol seçilir</b>; o sembol geldiği makarayı <b>boydan boya kaplar</b> ve tüm çizgilerde öder`
-      : b2.tur === 'yapiskan' ? `gelen <b>jokerler yerine yapışır</b>, bonus bitene kadar kalır` : b2.zincir ? `çarpan <b>×3 → ×6 → ×9 → ×15</b>` : b2.bomba ? `<b>renkli bombalar</b> düşer; o dönüşün kazancını <b>×2 – ×100</b> katlar` : '';
+      : b2.tur === 'yapiskan' ? `gelen <b>jokerler yerine yapışır</b>, bonus bitene kadar kalır` : b2.zincir ? `çarpan <b>×3 → ×6 → ×9 → ×15</b>`
+      : b2.birikim ? `Dede'nin attığı <b>çarpan küreleri birikir</b>; birikmiş toplam her kazancı katlar` : b2.bomba ? `<b>renkli bombalar</b> düşer; o dönüşün kazancını <b>×2 – ×100</b> katlar` : '';
     L.push({ baslik: `${esik} ${sAd} = BEDAVA DÖNÜŞ`, gorsel: c.mod === 'kume' ? ogSira(['S', 'S', 'S', 'S'], [0, 1, 2, 3]) : ogMini([['S', 'Y', 'C'], ['U', 'C', 'Y'], ['P', 'S', 'A'], ['C', 'U', 'Y'], ['A', 'Y', 'S']], [], [[0, 0], [2, 1], [4, 2]]),
       metin: `${sAd} <b>nerede olursa olsun</b> sayılır. ${esik} tane gelirse <b>${b2.adet} bedava dönüş</b>: ${ek}!` });
   }
+  if (c.kure) L.push({ baslik: 'Dede şimşek atar!', gorsel: `<div class="og-sira"><div class="h yan">${svg('B10')}</div><div class="h yan">${svg('B50')}</div><div class="h yan">${svg('B500')}</div></div>`,
+    metin: `Ekrana <b>×2 – ×500 çarpan küreleri</b> düşebilir. O dönüşte kazanırsan küreler toplanır ve kazancını <b>katlar</b>!` });
   if (c.tutKazan) L.push({ baslik: `${c.tutKazan} sikke = SİKKE BONUSU`, gorsel: ogSira(['O', 'O', 'O', 'O', 'O'], [0, 1, 2, 3, 4]),
     metin: `${c.tutKazan} veya daha fazla <b>altın sikke</b> gelirse sikkeler <b>kilitlenir</b> ve 3 tekrar hakkın olur. Her yeni sikke hakkı <b>3'e</b> döndürür. Sikkelerin değerleri toplanır; <b>15 karenin hepsi dolarsa BÜYÜK İKRAMİYE!</b>` });
   const sur = [];
@@ -1409,15 +1548,15 @@ function temaUygula(id) {
   document.querySelector('.logo').style.fontSize = TEMA.ad.length > 13 ? '15px' : TEMA.ad.length > 11 ? '17px' : '19px';
   $('kbIkon').innerHTML = DOMUZ;
   MK = M.makine(id); goruntu = MK.cevir(); bonus = { ozel: null, yapiskan: [] };
-  makaraKur(); boyutla();
+  makaraKur(); boyutla(); Karakter.yukle();
   document.querySelector('meta[name=theme-color]').content = TEMA.renk['--koyu'];
 }
 function lobiAc() {
   if (donuyor || bedavaKalan) return;
   otoAcik = false; oyunda = false; Muzik.ozel = null; Muzik.hiz = 1; Muzik.parca = 'lobi'; Muzik.yeniden(); cizgiTemizle();
-  $('oyunlar').innerHTML = Object.entries(TEMALAR).map(([id, t], i) => `
+  $('oyunlar').innerHTML = Object.entries(TEMALAR).sort((a, b) => (b[0] === 'olimpos') - (a[0] === 'olimpos')).map(([id, t], i) => `
     <button class="oyun-kart" data-tema="${id}" style="background:${t.resimli ? `linear-gradient(180deg,#0002,#000a), url(sanat/${id}/arka.webp) center 35% / cover` : t.renk['--arka']}">
-      ${id === 'ates' ? '<span class="sicak">🔥 SICAK</span>' : id === 'korsan' || id === 'buyucu' ? '<span class="sicak" style="background:#7c3aed;box-shadow:0 0 10px #7c3aed">YENİ</span>' : ''}
+      ${id === 'olimpos' ? '<span class="sicak">⚡ EN POPÜLER</span>' : id === 'ates' ? '<span class="sicak">🔥 SICAK</span>' : id === 'korsan' || id === 'buyucu' ? '<span class="sicak" style="background:#7c3aed;box-shadow:0 0 10px #7c3aed">YENİ</span>' : ''}
       <div class="semboller">${['W', 'N', 'A', 'S'].map(k => svg(k, '', true, t)).join('')}</div>
       <div>${t.resimli ? `<img class="kart-logo" src="sanat/${id}/logo.webp" alt="${t.ad}">` : `<h3>${t.simge} ${t.ad}</h3>`}<small>${t.slogan}</small></div>
       <span class="oyna">OYNA ▶</span>

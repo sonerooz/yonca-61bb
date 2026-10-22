@@ -140,6 +140,22 @@
       },
     },
 
+    // ===================== OLİMPOS DEDE (Zeus) =====================
+    olimpos: {
+      ad: 'Olimpos Dede', slogan: '6×5 · Dede şimşek atar · ×500 çarpan küreleri', simge: '⚡',
+      yagmurAd: 'DEDE KIZDI!', parcacik: 'yildiz',
+      etiketRenk: { S: ['#1e4fb0', '#ffd34d'] },
+      renk: {
+        '--arka': 'radial-gradient(120% 80% at 50% 10%, #3a5bbf 0%, #1a2a66 45%, #070b22 100%)',
+        '--koyu': '#070b22', '--soluk': '#b9c8ff', '--vurgu': '#7fb2ff',
+        '--cerceve': 'linear-gradient(180deg, #fff6d0, #c9a227 30%, #fffbe8 50%, #c9a227 75%, #5a3a00)',
+        '--makara': '#fff', '--dugme': 'radial-gradient(circle at 50% 35%, #d6e6ff, #2f6bd8 45%, #0d2a7a 80%)', '--dugme-golge': '#081a4f', '--desen': 'none',
+      },
+      sembol: Object.fromEntries([['S', 'Zeus Madalyonu'], ['N', 'Altın Taç'], ['A', 'Kum Saati'], ['U', 'Yakut Yüzük'], ['P', 'Altın Kadeh'],
+        ['C', 'Kırmızı Taş'], ['Y', 'Mor Taş'], ['X', 'Sarı Taş'], ['Z', 'Yeşil Taş'], ['W', 'Şimşek Küresi']].map(([k, ad]) => [k, { ad, c: '<circle cx="50" cy="50" r="36" fill="url(#gAltin)"/>' }])),
+      muzik: { bpm: 120, lead: 'triangle', bas: 'square', melodi: 'D5 F5 A5 D6 - C6 A5 F5 G5 - A5 G5 F5 E5 D5 -', basl: 'D2 - A2 - D2 - A2 - C2 - G2 - D2 - - -' },
+    },
+
     // ===================== ŞEKER DİYARI =====================
     seker: {
       ad: 'Şeker Diyarı', slogan: '6×5 · her yerde 8 şeker · patla, düş, bomba!', simge: '🍭',

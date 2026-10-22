@@ -1,8 +1,8 @@
 // çevrimdışı çalışma: önce önbellek, arkada güncelle
-const SURUM = 'yonca-v7';
+const SURUM = 'yonca-v8';
 const DOSYALAR = ['./', 'index.html', 'motor.js', 'temalar.js', 'yaris.js', 'rulet.js', 'tombala.js', 'manifest.json', 'ikon-180.png', 'ikon-192.png', 'ikon-512.png',
-  ...['lobi', 'yonca', 'seker', 'buyucu', 'ates', 'korsan', 'kuzu', 'maya', 'yaris', 'rulet', 'tombala'].map(m => `muzik/${m}.mp3`),
-  ...['yonca', 'seker', 'buyucu', 'ates', 'korsan', 'kuzu', 'maya'].flatMap(t => ['W', 'S', 'N', 'A', 'U', 'P', 'C', 'Y', t === 'kuzu' ? 'O' : 'X', 'Z', 'logo', 'arka'].map(k => `sanat/${t}/${k}.webp`))];
+  ...['lobi', 'yonca', 'seker', 'buyucu', 'ates', 'korsan', 'kuzu', 'maya', 'olimpos', 'yaris', 'rulet', 'tombala'].map(m => `muzik/${m}.mp3`),
+  ...['yonca', 'seker', 'buyucu', 'ates', 'korsan', 'kuzu', 'maya', 'olimpos'].flatMap(t => ['W', 'S', 'N', 'A', 'U', 'P', 'C', 'Y', t === 'kuzu' ? 'O' : 'X', 'Z', 'logo', 'arka', 'k_bekle', 'k_aksiyon', 'k_sevinc'].map(k => `sanat/${t}/${k}.webp`))];
 self.addEventListener('install', e => { e.waitUntil(caches.open(SURUM).then(c => c.addAll(DOSYALAR))); self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== SURUM).map(x => caches.delete(x)))));

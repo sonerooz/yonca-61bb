@@ -5,6 +5,7 @@ K = open(r'C:\HomeAssistant\gemini-key.txt').read().strip()
 URL = 'https://generativelanguage.googleapis.com/v1beta/models/lyria-3-clip-preview:generateContent?key=' + K
 ORTAK = ', instrumental, no vocals, casino slot machine game background music, seamless loop, catchy, high energy, clean mix'
 PARCALAR = {
+    'olimpos': 'Epic ancient Greek mythology orchestral, powerful brass, choir, harp and thunderous drums, majestic and heroic',
     'lobi': 'Glamorous Las Vegas casino lounge, swing big band with brass section, upright bass and brushed drums, exciting and luxurious',
     'yonca': 'Upbeat Irish jig, fiddle, tin whistle, bodhran and banjo, cheerful lucky leprechaun mood',
     'seker': 'Sweet bubbly candy pop, glockenspiel, marimba, plucky synths and claps, playful and colorful',

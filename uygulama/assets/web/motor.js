@@ -23,7 +23,7 @@
     korsan: { mod: 'cizgi', cizgi: 10, agirlik: AG5, yagmur: .06, kumbara: true, bedava: { adet: 6, carpan: 1, tur: 'yapiskan' }, olcek: 0.871 },
     kuzu: { mod: 'cizgi', cizgi: 10, agirlik: { ...AG5, O: 4 }, tutKazan: 5, olcek: 0.848 },
     maya: { mod: 'yollar', agirlik: AG5, dusme: true, zincir: [1, 2, 3, 5], bedava: { adet: 10, carpan: 1, zincir: [3, 6, 9, 15] }, olcek: 0.116 },
-    olimpos: { mod: 'kume', sutun: 6, satir: 5, agirlik: { S: 1.3, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9, X: 8, Z: 9 }, kure: .004, bedava: { adet: 15, esik: 4, bomba: .012, birikim: true }, olcek: 1 },
+    olimpos: { mod: 'kume', sutun: 6, satir: 5, agirlik: { S: 1.3, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9, X: 8, Z: 9 }, kure: .004, bedava: { adet: 15, esik: 4, bomba: .012, birikim: true }, olcek: 0.451 },
     seker: { mod: 'kume', sutun: 6, satir: 5, agirlik: { S: 1.3, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9, X: 8, Z: 9 }, bedava: { adet: 10, esik: 4, bomba: .028 }, olcek: 1.137 },
   };
   // küme ödemeleri (toplam bahis katı): 8-9 / 10-11 / 12+

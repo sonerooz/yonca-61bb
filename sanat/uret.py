@@ -11,6 +11,12 @@ IZGARA = ('Arrange exactly 10 separate icons in a strict grid of 5 columns and 2
           'all icons the same size, nothing touching or overlapping. Plain flat light gray (#e8e8e8) background. No text, no letters, no numbers, '
           'no labels, no grid lines, no frames around cells. Order left-to-right, top row then bottom row: ')
 TEMALAR = {
+    'olimpos': ('ancient Greek gods Mount Olympus theme like a famous Zeus slot',
+                ['a glowing blue-white lightning orb (spare)', 'a golden portrait medallion of old bearded Zeus with laurel crown', 'a golden royal crown with gems',
+                 'an ornate golden hourglass', 'a golden ring with a big red gem', 'a golden chalice goblet', 'a faceted red gem', 'a faceted purple gem',
+                 'a faceted yellow gem', 'a faceted green gem'],
+                'majestic marble Greek temple gates on top of Mount Olympus above golden clouds, columns, divine light, stormy blue sky with lightning',
+                'OLİMPOS DEDE'),
     'yonca': ('Irish lucky leprechaun theme',
               ['a glowing magical four-leaf clover with golden sparkles', 'a black cauldron pot overflowing with gold coins under a small rainbow',
                'a shiny golden horseshoe', 'a big gold coin with a clover emblem', 'a cute red ladybug', 'a green leprechaun top hat with gold buckle',

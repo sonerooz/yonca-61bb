@@ -28,9 +28,9 @@ KARAKTER = {
     'kuzu': ('a jolly old Turkish farmer grandpa with a white mustache, flat cap, plaid shirt and overalls, holding a cute fluffy white lamb',
              'throwing a handful of gold coins forward with one hand, lamb looking excited',
              'dancing happily with the lamb jumping beside him'),
-    'ates': ('a fiery genie made of flames with a golden turban, muscular, crossed arms, glowing orange eyes, flame tail instead of legs',
-             'throwing a blazing fireball forward with one hand',
-             'laughing with fire exploding around him, arms raised'),
+    'ates': ('a friendly cartoon fire spirit mascot shaped like a big cheerful flame with a golden turban and a big smile, little arms, glowing warm orange and yellow',
+             'tossing a small glowing fireball forward playfully',
+             'cheering with arms raised, sparkles and small flames around'),
 }
 
 
