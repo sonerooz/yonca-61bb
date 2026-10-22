@@ -1,6 +1,6 @@
 // At Yarışı: 6 kulvar, oranlı bahis, canlı anlatımlı yarış (index.html'deki ortak fonksiyonları kullanır)
 (function () {
-  const KASA = 0.85; // oranlar %15 kasa payıyla (at yarışı totosu gibi)
+  const KASA = 0.92; // oranlar %8 kasa payıyla
   const RENKLER = [['#e53935', '#fff'], ['#f5f5f5', '#111'], ['#1e63d6', '#fff'], ['#ffd23f', '#111'], ['#2e9d48', '#fff'], ['#111', '#ffd23f']];
   const ADLAR = ['Rüzgar', 'Kara Şimşek', 'Gülbatur', 'Yıldırım', 'Bozkurt', 'Sultan', 'Asil Prens', 'Fırtına', 'Deli Tay', 'Altın Nal', 'Poyraz',
     'Efe', 'Kısmet', 'Tozkoparan', 'Boran', 'Akıncı', 'Cesur', 'Şahbatur', 'Karayel', 'Gökbörü', 'Demir Bilek', 'Çılgın Kız', 'Kumral', 'Hayalet'];

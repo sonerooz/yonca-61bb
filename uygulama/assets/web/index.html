@@ -469,7 +469,7 @@ function sesBaslat() {
 function sesKanallari() {
   if (!AC) return;
   efektBus.gain.value = D.sessiz ? 0 : 1;
-  if (D.muzik) { Ortam.baslat(); if (oyunda || aktifMasa) Muzik.baslat(); } else { Ortam.dur(); Muzik.dur(); }
+  if (D.muzik) { Ortam.baslat(); Muzik.baslat(); } else { Ortam.dur(); Muzik.dur(); }
 }
 function ton(frek, sure, { tip = 'sine', ses = .2, gec = 0, kay = 0, bus = null, t0 = null } = {}) {
   if (!AC) return;
@@ -509,12 +509,12 @@ const titret = p => { try { navigator.vibrate && navigator.vibrate(p); } catch {
 
 // ---------- arcade müziği (dosyasız, tema başına) ----------
 const NOTA = n => { const m = n.match(/^([A-G])(#?)(\d)$/); const i = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[m[1]] + (m[2] ? 1 : 0); return 440 * Math.pow(2, ((+m[3] + 1) * 12 + i - 69) / 12); };
-const Muzik = {
+// yedek: dosya çalınamazsa kodla üretilen chiptune
+const Cip = {
   zam: null, adim: 0, sonraki: 0, hiz: 1,
-  ozel: null,
   baslat() {
     if (!AC || !D.muzik || this.zam) return;
-    const t = this.ozel || TEMA.muzik; this.mel = t.melodi.split(' '); this.bas = t.basl.split(' '); this.t = t;
+    const t = Muzik.ozel || TEMA.muzik; this.mel = t.melodi.split(' '); this.bas = t.basl.split(' '); this.t = t;
     this.adim = 0; this.sonraki = AC.currentTime + .15;
     this.zam = setInterval(() => this.planla(), 30);
   },
@@ -532,6 +532,24 @@ const Muzik = {
       this.sonraki += s; this.adim++;
     }
   },
+};
+// asıl müzik: muzik/<parça>.mp3 (Gemini Lyria ile üretildi), döngüde çalar
+const Muzik = {
+  parca: 'lobi', ozel: null, el: null, _hiz: 1,
+  get hiz() { return this._hiz; },
+  set hiz(v) { this._hiz = v; Cip.hiz = v; if (this.el) this.el.playbackRate = v; },
+  baslat() {
+    if (!D.muzik) return;
+    if (this.el && this.el.dataset.ad === this.parca) { if (this.el.paused) this.el.play().catch(() => {}); return; }
+    this.dur();
+    const el = new Audio(`muzik/${this.parca}.mp3`);
+    el.dataset.ad = this.parca; el.loop = true; el.volume = .5; el.playbackRate = this._hiz;
+    el.onerror = () => { if (this.el === el) { this.el = null; Cip.baslat(); } };
+    this.el = el;
+    el.play().catch(() => {});
+  },
+  dur() { if (this.el) this.el.pause(); Cip.dur(); },
+  yeniden() { if (this.el) { this.el.pause(); this.el = null; } Cip.dur(); this.baslat(); },
 };
 
 // ---------- salon ortamı: uğultu + uzaktaki makinelerin kazanma sesleri ----------
@@ -1099,7 +1117,7 @@ function temaUygula(id) {
 }
 function lobiAc() {
   if (donuyor || bedavaKalan) return;
-  otoAcik = false; oyunda = false; Muzik.dur(); Muzik.ozel = null; cizgiTemizle();
+  otoAcik = false; oyunda = false; Muzik.ozel = null; Muzik.hiz = 1; Muzik.parca = 'lobi'; Muzik.yeniden(); cizgiTemizle();
   $('oyunlar').innerHTML = Object.entries(TEMALAR).map(([id, t], i) => `
     <button class="oyun-kart" data-tema="${id}" style="background:${t.renk['--arka']}">
       ${id === 'ates' ? '<span class="sicak">🔥 SICAK</span>' : id === 'korsan' || id === 'buyucu' ? '<span class="sicak" style="background:#7c3aed;box-shadow:0 0 10px #7c3aed">YENİ</span>' : ''}
@@ -1125,7 +1143,7 @@ function oyunaGir(id) {
   sesBaslat(); SES.kazan3();
   temaUygula(id);
   $('lobi').classList.remove('acik');
-  oyunda = true;
+  oyunda = true; Muzik.parca = id;
   mesaj(`${TEMA.ad}'na hoş geldin! Bol şans ${TEMA.simge}`);
   requestAnimationFrame(boyutla);
   Muzik.yeniden();
@@ -1138,7 +1156,7 @@ function masaAc(id) {
   sesBaslat(); SES.kazan3();
   const o = window.MASA[id];
   $('lobi').classList.remove('acik');
-  aktifMasa = o; oyunda = false;
+  aktifMasa = o; oyunda = false; Muzik.parca = id;
   o.ac($('digerOyun'));
   D.ogrendi = D.ogrendi || {};
   if (!D.ogrendi[id]) { D.ogrendi[id] = true; kaydet(); setTimeout(() => ogreticiAc(o.ad.toLocaleUpperCase('tr-TR'), o.ogretici()), 400); }
@@ -1202,7 +1220,9 @@ $('sifirla').addEventListener('click', () => {
   const { sessiz, muzik, tema } = D; D = { ...ilk, sessiz, muzik, tema }; kaydet(); arayuz(); $('bilgiKatman').classList.remove('acik'); toast('Sıfırlandı');
 });
 document.addEventListener('keydown', e => { if (e.code === 'Space' && oyunda) { e.preventDefault(); $('cevir').click(); } });
-document.addEventListener('visibilitychange', () => { if (!AC) return; document.hidden ? AC.suspend() : AC.resume(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { Muzik.el?.pause(); AC?.suspend(); } else { AC?.resume(); if (D.muzik) Muzik.el?.play().catch(() => {}); }
+});
 
 temaUygula(D.tema);
 boyutla();
