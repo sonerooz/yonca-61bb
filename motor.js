@@ -23,6 +23,7 @@
     korsan: { mod: 'cizgi', cizgi: 10, agirlik: AG5, yagmur: .06, kumbara: true, bedava: { adet: 6, carpan: 1, tur: 'yapiskan' }, olcek: 0.871 },
     kuzu: { mod: 'cizgi', cizgi: 10, agirlik: { ...AG5, O: 4 }, tutKazan: 5, olcek: 0.848 },
     maya: { mod: 'yollar', agirlik: AG5, dusme: true, zincir: [1, 2, 3, 5], bedava: { adet: 10, carpan: 1, zincir: [3, 6, 9, 15] }, olcek: 0.116 },
+    olimpos: { mod: 'kume', sutun: 6, satir: 5, agirlik: { S: 1.3, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9, X: 8, Z: 9 }, kure: .004, bedava: { adet: 15, esik: 4, bomba: .012, birikim: true }, olcek: 1 },
     seker: { mod: 'kume', sutun: 6, satir: 5, agirlik: { S: 1.3, N: 4, A: 5, U: 6, P: 7, C: 8, Y: 9, X: 8, Z: 9 }, bedava: { adet: 10, esik: 4, bomba: .028 }, olcek: 1.137 },
   };
   // küme ödemeleri (toplam bahis katı): 8-9 / 10-11 / 12+
@@ -126,13 +127,14 @@
       const o = { asamalar: [], kazanc: 0, bedava: 0, ikramiye: false, tutKazan: null, sonuc: null };
       let iz = mk.cevir(rnd);
       if (B && c.bedava?.tur === 'yapiskan') for (const h of durum.yapiskan || []) { const [m, s] = h.split(',').map(Number); iz[m][s] = 'W'; }
-      const bombaliBedava = B && c.mod === 'kume' && c.bedava?.bomba;
-      if (bombaliBedava) iz = iz.map(k => k.map(x => x !== 'S' && rnd() < c.bedava.bomba ? bomba(rnd) : x));
+      const kureOran = c.mod === 'kume' ? (B ? c.bedava?.bomba : c.kure) || 0 : 0; // çarpan küresi/bomba olasılığı
+      const bombaliBedava = kureOran > 0;
+      if (bombaliBedava) iz = iz.map(k => k.map(x => x !== 'S' && rnd() < kureOran ? bomba(rnd) : x));
       o.ilk = iz.map(k => k.slice());
 
       if (c.mod === 'kume' || c.dusme) {
         const zincir = B && c.bedava?.zincir ? c.bedava.zincir : c.zincir || [1];
-        const uret = c.mod === 'kume' ? (bombaliBedava ? () => (rnd() < c.bedava.bomba ? bomba(rnd) : secDolgu(rnd)) : () => secDolgu(rnd)) : () => mk.rasgele(rnd);
+        const uret = c.mod === 'kume' ? (bombaliBedava ? () => (rnd() < kureOran ? bomba(rnd) : secDolgu(rnd)) : () => secDolgu(rnd)) : () => mk.rasgele(rnd);
         for (let adim = 0; adim < 30; adim++) {
           const carp = zincir[Math.min(adim, zincir.length - 1)] * bc;
           const r = hesapla(iz, bahis, carp);
@@ -147,9 +149,14 @@
           iz.forEach((kol, m) => kol.forEach((x, s) => { if (bombaMi(x)) bombalar.push([m, s, +x.slice(1)]); }));
           if (bombalar.length) {
             const top = bombalar.reduce((a, b) => a + b[2], 0);
-            o.asamalar.push({ tip: 'bomba', bombalar, carp: top, onceki: o.kazanc });
-            o.kazanc *= top;
+            // olimpos bedava dönüşü: küreler birikir, birikmiş toplam her kazancı çarpar
+            const carp = B && c.bedava?.birikim ? (o.yeniBirikim = (durum.birikim || 0) + top) : top;
+            o.asamalar.push({ tip: 'bomba', bombalar, carp, onceki: o.kazanc, birikim: !!(B && c.bedava?.birikim) });
+            o.kazanc *= carp;
           }
+        } else if (B && c.bedava?.birikim && durum.birikim && o.kazanc > 0) { // küre yoksa da birikmiş çarpan uygulanır
+          o.asamalar.push({ tip: 'bomba', bombalar: [], carp: durum.birikim, onceki: o.kazanc, birikim: true });
+          o.kazanc *= durum.birikim;
         }
       } else {
         let r = hesapla(iz, bahis, bc);
